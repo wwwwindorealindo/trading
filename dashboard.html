@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Trading</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================= */
+        /* 1. VARIABEL & RESET DASAR (Tema Dark Mode) */
+        /* ======================================= */
+        :root {
+            --color-dark-blue: #0A192F; 
+            --color-medium-blue: #1C305C; 
+            --color-accent-yellow: #FFD700; 
+            --color-accent-green: #38A169;
+            --color-text-light: #CCD6F6; 
+            --color-text-dark: #333333; 
+            --color-card-bg: #1A2946; 
+            --color-nav-bg: #14213D; 
+            --color-link: #81A4CD; 
+            --color-red-tag: #C53030;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--color-dark-blue);
+            color: var(--color-text-light);
+            /* Tambah padding bawah untuk memberi ruang margin navbar */
+            padding-bottom: 100px; 
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 20px 20px 0 20px; 
+        }
+
+        /* ======================================= */
+        /* 2. HEADER DASHBOARD (Saldo Akun & Logo) */
+        /* ======================================= */
+        .dashboard-header {
+            margin-bottom: 25px;
+        }
+
+        .balance-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .balance-info h3 {
+            font-size: 16px;
+            font-weight: 500;
+            color: #A0AEC0;
+            margin-bottom: 5px;
+        }
+
+        .balance-info p {
+            font-size: 40px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .balance-info span.currency {
+            font-size: 22px;
+            font-weight: 700;
+            margin-right: 5px;
+        }
+        
+        .header-logo {
+            font-size: 28px;
+            color: var(--color-accent-yellow);
+            padding: 5px;
+            align-self: flex-start;
+        }
+
+        .stats-row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-top: 1px solid var(--color-medium-blue);
+            padding-top: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            color: #A0AEC0;
+        }
+        .stat-item strong {
+             color: var(--color-text-light);
+             font-weight: 600;
+        }
+
+        /* ======================================= */
+        /* 3. TOMBOL NAVIGASI UTAMA (Stable, Welfare) */
+        /* ======================================= */
+        .product-nav {
+            display: flex;
+            gap: 10px;
+            margin: 25px 0;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 5px; 
+            border-bottom: 1px solid var(--color-medium-blue);
+            padding-bottom: 15px;
+        }
+        .product-nav button {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+        .product-nav button.active {
+            background-color: var(--color-accent-yellow);
+            color: var(--color-text-dark);
+        }
+        .product-nav button:not(.active) {
+            background-color: var(--color-card-bg);
+            color: var(--color-text-light);
+            border: 1px solid var(--color-link);
+        }
+
+        /* ======================================= */
+        /* 4. PLAN PRODUK (Card) */
+        /* ======================================= */
+        .product-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .product-list.hidden {
+            display: none;
+        }
+
+        .product-card {
+            background-color: var(--color-card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .product-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--color-medium-blue);
+            padding-bottom: 15px;
+        }
+
+        .product-header .icon {
+            font-size: 24px;
+            color: var(--color-link);
+        }
+
+        .product-header h4 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .product-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            font-size: 14px;
+        }
+        .detail-item p {
+            color: #A0AEC0;
+            margin-bottom: 4px;
+        }
+        .detail-item strong {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .earning-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--color-medium-blue);
+        }
+        .earning-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 15px;
+        }
+        .earning-item .label {
+            color: #A0AEC0;
+        }
+        .earning-item .value {
+            font-weight: 600;
+            color: var(--color-accent-yellow);
+        }
+        
+        .action-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--color-medium-blue);
+        }
+        .action-row .limit {
+            font-size: 14px;
+            color: #A0AEC0;
+        }
+        .action-row .limit strong { 
+            font-size: 16px;
+            color: var(--color-accent-yellow);
+            font-weight: 700;
+        }
+
+        .btn-invest {
+            background-color: var(--color-accent-green);
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* ======================================= */
+        /* 5. NAVBAR BAWAH (FIXED) - Gaya Floating/Melayang */
+        /* ======================================= */
+        .navbar {
+            position: fixed;
+            /* Jarak dari bawah */
+            bottom: 20px; 
+            left: 50%;
+            transform: translateX(-50%);
+            /* Lebar dikurangi agar ada margin kiri/kanan */
+            width: calc(100% - 40px); 
+            max-width: 430px; 
+            
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            
+            /* Gaya Transparan Semu */
+            background-color: rgba(20, 33, 61, 0.95); 
+            backdrop-filter: blur(5px); 
+            height: 70px;
+            border-top: none; 
+            
+            /* Sudut Membulat */
+            border-radius: 15px; 
+            
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+            padding: 5px 0;
+            transition: all 0.3s ease;
+            /* Pastikan tidak ada properti animation/keyframes di sini */
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #A0AEC0; 
+            font-size: 11px;
+            font-weight: 500;
+            padding: 8px 0;
+            flex-grow: 1; 
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-item i {
+            font-size: 22px; 
+            margin-bottom: 2px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: var(--color-accent-yellow); 
+        }
+
+        /* Animasi Item Aktif */
+        .nav-item.active i {
+            transform: translateY(-5px); 
+            color: var(--color-accent-yellow);
+        }
+        
+        /* Garis Indikator di bawah ikon aktif */
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px; 
+            height: 3px;
+            background-color: var(--color-accent-yellow);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        /* Media Query untuk menjaga lebar yang tepat di layar besar */
+        @media (min-width: 450px) {
+            .navbar {
+                left: 50%;
+                transform: translateX(-50%);
+                width: 430px; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="dashboard-header">
+            <div class="balance-row">
+                <div class="balance-info">
+                    <h3>Saldo Akun</h3>
+                    <p><span class="currency">Rp</span> 0</p>
+                </div>
+                <i class="fas fa-rocket header-logo"></i>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-item">
+                    Pendapatan Total 
+                    <strong>Rp 0</strong>
+                </div>
+                <div class="stat-item">
+                    Produk Aktif 
+                    <strong>0</strong>
+                </div>
+            </div>
+        </div>
+        
+        <div class="product-nav">
+            <button class="btn-product active" data-target="stable-products">Stable Products</button>
+            <button class="btn-product" data-target="welfare-products">Welfare Products</button>
+            <button class="btn-product" data-target="event-products">Event</button>
+        </div>
+
+        <div class="product-list" id="stable-products">
+            
+            <div class="product-card">
+                <div class="product-header">
+                    <i class="fas fa-coins icon"></i> 
+                    <h4>TRADING 1</h4>
+                </div>
+                <div class="product-details">
+                    <div class="detail-item"><p>Harga Satuan</p><strong>Rp 50.000</strong></div>
+                    <div class="detail-item"><p>Siklus Keuntungan</p><strong>36 Hari</strong></div>
+                </div>
+                <div class="earning-row">
+                    <div class="earning-item"><span class="label">Penghasilan Harian</span><span class="value">Rp 10.000</span></div>
+                    <div class="earning-item"><span class="label">Total Penghasilan</span><span class="value">Rp 360.000</span></div>
+                </div>
+                <div class="action-row">
+                    <div class="limit">Bonus <strong>Rp 5.000</strong></div>
+                    <a href="#" class="btn-invest">Beli Sekarang</a>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-header">
+                    <i class="fas fa-money-check-alt icon"></i> 
+                    <h4>TRADING 2</h4>
+                </div>
+                <div class="product-details">
+                    <div class="detail-item"><p>Harga Satuan</p><strong>Rp 150.000</strong></div>
+                    <div class="detail-item"><p>Siklus Keuntungan</p><strong>36 Hari</strong></div>
+                </div>
+                <div class="earning-row">
+                    <div class="earning-item"><span class="label">Penghasilan Harian</span><span class="value">Rp 35.000</span></div>
+                    <div class="earning-item"><span class="label">Total Penghasilan</span><span class="value">Rp 1.260.000</span></div>
+                </div>
+                <div class="action-row">
+                    <div class="limit">Bonus <strong>Rp 15.000</strong></div>
+                    <a href="#" class="btn-invest">Beli Sekarang</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-header">
+                    <i class="fas fa-chart-line icon"></i> 
+                    <h4>TRADING 3</h4>
+                </div>
+                <div class="product-details">
+                    <div class="detail-item"><p>Harga Satuan</p><strong>Rp 300.000</strong></div>
+                    <div class="detail-item"><p>Siklus Keuntungan</p><strong>36 Hari</strong></div>
+                </div>
+                <div class="earning-row">
+                    <div class="earning-item"><span class="label">Penghasilan Harian</span><span class="value">Rp 75.000</span></div>
+                    <div class="earning-item"><span class="label">Total Penghasilan</span><span class="value">Rp 2.700.000</span></div>
+                </div>
+                <div class="action-row">
+                    <div class="limit">Bonus <strong>Rp 30.000</strong></div>
+                    <a href="#" class="btn-invest">Beli Sekarang</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-header">
+                    <i class="fas fa-hand-holding-usd icon"></i> 
+                    <h4>TRADING 4</h4>
+                </div>
+                <div class="product-details">
+                    <div class="detail-item"><p>Harga Satuan</p><strong>Rp 500.000</strong></div>
+                    <div class="detail-item"><p>Siklus Keuntungan</p><strong>36 Hari</strong></div>
+                </div>
+                <div class="earning-row">
+                    <div class="earning-item"><span class="label">Penghasilan Harian</span><span class="value">Rp 130.000</span></div>
+                    <div class="earning-item"><span class="label">Total Penghasilan</span><span class="value">Rp 4.680.000</span></div>
+                </div>
+                <div class="action-row">
+                    <div class="limit">Bonus <strong>Rp 50.000</strong></div>
+                    <a href="#" class="btn-invest">Beli Sekarang</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-header">
+                    <i class="fas fa-dollar-sign icon"></i> 
+                    <h4>TRADING 5</h4>
+                </div>
+                <div class="product-details">
+                    <div class="detail-item"><p>Harga Satuan</p><strong>Rp 1.000.000</strong></div>
+                    <div class="detail-item"><p>Siklus Keuntungan</p><strong>36 Hari</strong></div>
+                </div>
+                <div class="earning-row">
+                    <div class="earning-item"><span class="label">Penghasilan Harian</span><span class="value">Rp 280.000</span></div>
+                    <div class="earning-item"><span class="label">Total Penghasilan</span><span class="value">Rp 10.080.000</span></div>
+                </div>
+                <div class="action-row">
+                    <div class="limit">Bonus <strong>Rp 100.000</strong></div>
+                    <a href="#" class="btn-invest">Beli Sekarang</a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="product-list hidden" id="welfare-products">
+            
+            <div class="product-card">
+                <div class="product-header">
+                    <i class="fas fa-gift icon"></i> 
+                    <h4>WELFARE 1</h4>
+                </div>
+                <div class="product-details">
+                    <div class="detail-item"><p>Harga Satuan</p><strong>Rp 200.000</strong></div>
+                    <div class="detail-item"><p>Siklus Keuntungan</p><strong>7 Hari</strong></div>
+                </div>
+                <div class="earning-row">
+                    <div class="earning-item"><span class="label">Penghasilan Harian</span><span class="value">Rp 50.000</span></div>
+                    <div class="earning-item"><span class="label">Total Penghasilan</span><span class="value">Rp 350.000</span></div>
+                </div>
+                <div class="action-row">
+                    <div class="limit">Batas: <strong>1 Kali</strong></div>
+                    <a href="#" class="btn-invest">Beli Sekarang</a>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-header">
+                    <i class="fas fa-seedling icon"></i> 
+                    <h4>WELFARE 2</h4>
+                </div>
+                <div class="product-details">
+                    <div class="detail-item"><p>Harga Satuan</p><strong>Rp 750.000</strong></div>
+                    <div class="detail-item"><p>Siklus Keuntungan</p><strong>15 Hari</strong></div>
+                </div>
+                <div class="earning-row">
+                    <div class="earning-item"><span class="label">Penghasilan Harian</span><span class="value">Rp 120.000</span></div>
+                    <div class="earning-item"><span class="label">Total Penghasilan</span><span class="value">Rp 1.800.000</span></div>
+                </div>
+                <div class="action-row">
+                    <div class="limit">Batas: <strong>1 Kali</strong></div>
+                    <a href="#" class="btn-invest">Beli Sekarang</a>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="product-list hidden" id="event-products">
+            <div class="product-card">
+                <div class="product-header">
+                    <i class="fas fa-star icon"></i> 
+                    <h4>PRODUK EVENT KHUSUS</h4>
+                </div>
+                <p class="product-description" style="color: var(--color-accent-yellow);">Produk ini hanya tersedia di waktu event tertentu!</p>
+                <div class="product-details">
+                    <div class="detail-item"><p>Harga Satuan</p><strong>TBA</strong></div>
+                    <div class="detail-item"><p>Siklus Keuntungan</p><strong>TBA</strong></div>
+                </div>
+                <div class="action-row">
+                    <div class="limit">Status: <strong>Segera Hadir</strong></div>
+                    <a href="#" class="btn-invest" style="background-color: #718096;">Lihat Detail</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navbar">
+        <a href="#" class="nav-item active" data-nav-target="dashboard">
+            <i class="fas fa-home"></i>
+            Dashboard
+        </a>
+        <a href="#" class="nav-item" data-nav-target="my-product">
+            <i class="fas fa-box-open"></i>
+            My Produk
+        </a>
+        <a href="#" class="nav-item" data-nav-target="my-team">
+            <i class="fas fa-users"></i>
+            My Team
+        </a>
+        <a href="#" class="nav-item" data-nav-target="profile">
+            <i class="fas fa-user-circle"></i>
+            Profil
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Logika Ganti Tab Produk ---
+            const productButtons = document.querySelectorAll('.btn-product');
+            const productLists = document.querySelectorAll('.product-list');
+
+            function switchProductTab(targetId) {
+                productButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                productLists.forEach(list => {
+                    list.classList.add('hidden');
+                });
+                const activeButton = document.querySelector(`.btn-product[data-target="${targetId}"]`);
+                if (activeButton) {
+                    activeButton.classList.add('active');
+                }
+                const targetList = document.getElementById(targetId);
+                if (targetList) {
+                    targetList.classList.remove('hidden');
+                }
+            }
+
+            productButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    switchProductTab(targetId);
+                });
+            });
+
+            switchProductTab('stable-products');
+
+            // --- Logika Ganti Status Active Navbar ---
+            const navItems = document.querySelectorAll('.nav-item');
+
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault(); 
+                    
+                    navItems.forEach(i => i.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
