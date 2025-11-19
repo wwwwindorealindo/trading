@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Team</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================= */
+        /* 1. VARIABEL & RESET DASAR */
+        /* ======================================= */
+        :root {
+            --color-bg-light: #ffffff;      
+            --color-card-bg: #ebecf0;        
+            --color-text-dark: #2d3748;      
+            --color-text-gray: #718096;      
+            --color-border-light: #c2c9d1;  
+            --color-accent-main: #00A3B0; /* TEAL (Primary Color) */
+            --color-accent-secondary: #38A169; /* HIJAU (Success) */
+            --color-red-tag: #C53030;      
+            --color-blue-bg: #EBF8FF; 
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease-out;
+        }
+
+        body {
+            background-color: var(--color-bg-light); 
+            color: var(--color-text-dark); 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            padding-bottom: 90px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-grow: 1;
+            padding-bottom: 20px;
+        }
+
+        /* ======================================= */
+        /* 2. HEADER HALAMAN & UTILITY */
+        /* ======================================= */
+        .page-header {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 15px 0;
+        }
+        .page-header a {
+            color: var(--color-text-dark);
+            font-size: 20px;
+            text-decoration: none;
+            justify-self: start;
+        }
+        .page-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            grid-column: 2 / 3;
+            color: var(--color-text-dark);
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--color-text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title i {
+            color: var(--color-accent-main);
+        }
+
+        /* ======================================= */
+        /* 3. BOX UNDANG TEMAN & GRID KOMISI */
+        /* ======================================= */
+        .referral-box {
+            background-color: var(--color-accent-main);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .referral-box h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .referral-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 40px;
+        }
+        .referral-link {
+            flex-grow: 1;
+            padding: 0 10px;
+            font-size: 13px;
+            color: var(--color-text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: left;
+            font-weight: 500;
+        }
+        .btn-copy {
+            background-color: var(--color-accent-secondary);
+            color: white;
+            border: none;
+            padding: 0 15px;
+            height: 100%;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+        }
+        
+        .commission-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .commission-item {
+            background-color: var(--color-card-bg);
+            padding: 15px 10px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--color-border-light);
+        }
+        .commission-level {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-text-gray);
+            margin-bottom: 4px;
+        }
+        .commission-rate {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-accent-secondary);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* ======================================= */
+        /* 4. BOX PENDAPATAN KOMISI LEVEL */
+        /* ======================================= */
+        .commission-income-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--color-border-light);
+            border-top: 1px solid var(--color-border-light);
+        }
+        .income-item {
+            padding: 10px 5px;
+            border-radius: 8px;
+            text-align: center;
+            background-color: var(--color-blue-bg);
+        }
+        .income-item p {
+            font-size: 11px;
+            color: var(--color-text-gray);
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+        .income-item strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-text-dark);
+        }
+
+        /* ======================================= */
+        /* 5. TABS NAVIGASI LEVEL */
+        /* ======================================= */
+        .tabs-nav {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .tab-button-level {
+            flex: 1;
+            padding: 10px 10px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: var(--color-text-gray);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .tab-button-level.active {
+            color: var(--color-accent-main);
+            border-bottom: 3px solid var(--color-accent-main);
+        }
+        
+        /* ======================================= */
+        /* 6. DAFTAR ANGGOTA TIM */
+        /* ======================================= */
+        .team-list-container {
+            min-height: 250px; 
+        }
+        .team-list {
+            display: none; 
+            flex-direction: column;
+            gap: 12px;
+        }
+        .team-list.active {
+            display: flex;
+        }
+        
+        .member-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: var(--color-card-bg);
+            border-radius: 10px;
+            border-left: 5px solid var(--color-accent-main);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .member-icon {
+            width: 45px;
+            height: 45px;
+            background-color: var(--color-accent-main);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .member-details h5 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 2px;
+            color: var(--color-text-dark);
+        }
+
+        .member-details p {
+            font-size: 12px;
+            color: var(--color-text-gray);
+        }
+        
+        .member-stats {
+            text-align: right;
+        }
+        
+        .member-stats .commission {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--color-accent-secondary);
+            margin-bottom: 2px;
+        }
+        .member-stats .level {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-text-gray);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: var(--color-card-bg);
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+        .empty-state i {
+            font-size: 60px;
+            color: var(--color-text-gray);
+            margin-bottom: 15px;
+        }
+        .empty-state h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .empty-state p {
+            font-size: 14px;
+            color: var(--color-text-gray);
+        }
+
+
+        /* ======================================= */
+        /* 7. NAVBAR BAWAH (SAMA DENGAN PRODUK) */
+        /* ======================================= */
+        .navbar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); width: calc(100% - 40px); max-width: 430px; display: flex; justify-content: space-around; align-items: center; background-color: rgba(0,0,0,0); border: 1px solid var(--color-border-light); backdrop-filter: blur(5px); height: 70px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); padding: 5px 0; transition: none; opacity: 0; }
+        @keyframes slideInUp { 0% { opacity: 0; transform: translateX(-50%) translateY(100px); } 100% { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        .navbar.animate-in { animation: slideInUp 0.5s ease-out forwards; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--color-text-gray); font-size: 11px; font-weight: 500; padding: 8px 0; flex-grow: 1; position: relative; transition: color 0.3s ease; }
+        .nav-item i { font-size: 22px; margin-bottom: 2px; transition: transform 0.3s ease, color 0.3s ease; }
+        .nav-item.active { color: var(--color-accent-main); }
+        .nav-item.active i { transform: translateY(-5px); color: var(--color-accent-main); }
+        .nav-item.active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 30px; height: 3px; background-color: var(--color-accent-main); border-radius: 2px; transition: width 0.3s ease; }
+        
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 1; transition: opacity 0.5s ease-out, visibility 0.5s; visibility: visible; }
+        .loading-overlay.hidden { opacity: 0; visibility: hidden; }
+        .spinner { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px; background-color: var(--color-bg-light); border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
+        .spinner i { font-size: 40px; color: var(--color-accent-main); animation: spin 1.2s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner">
+            <i class="fas fa-sync-alt"></i>
+            <span class="loading-text">Memuat...</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        
+        <div class="page-header">
+            <a href="dashboard.html" aria-label="Kembali"><i class="fas fa-arrow-left"></i></a>
+            <h2>My Team</h2>
+            <div class="right-placeholder"></div>
+        </div>
+        
+        <div class="referral-box">
+            <h4>Undang Teman & Dapatkan Komisi!</h4>
+            <div class="referral-input-group">
+                <div class="referral-link" id="referralLinkText">Memuat Link...</div>
+                <button class="btn-copy" onclick="copyReferralLink()">Salin</button>
+            </div>
+        </div>
+
+        <h3 class="section-title"><i class="fas fa-chart-line"></i> Struktur Komisi Referral</h3>
+        <div class="commission-grid">
+            <div class="commission-item">
+                <div class="commission-level">Level 1</div>
+                <div class="commission-rate">13%</div>
+            </div>
+            <div class="commission-item">
+                <div class="commission-level">Level 2</div>
+                <div class="commission-rate">5%</div>
+            </div>
+            <div class="commission-item">
+                <div class="commission-level">Level 3</div>
+                <div class="commission-rate">2%</div>
+            </div>
+        </div>
+
+        <h3 class="section-title"><i class="fas fa-wallet"></i> Total Pendapatan Komisi</h3>
+        <div class="commission-income-grid">
+            <div class="income-item">
+                <p>Level 1</p>
+                <strong id="incomeL1">Rp 0</strong>
+            </div>
+            <div class="income-item">
+                <p>Level 2</p>
+                <strong id="incomeL2">Rp 0</strong>
+            </div>
+            <div class="income-item">
+                <p>Level 3</p>
+                <strong id="incomeL3">Rp 0</strong>
+            </div>
+        </div>
+        
+        <div class="tabs-nav" id="team-tabs-nav">
+            <button class="tab-button-level active" data-level="L1">Level 1</button>
+            <button class="tab-button-level" data-level="L2">Level 2</button>
+            <button class="tab-button-level" data-level="L3">Level 3</button>
+        </div>
+        
+        <div class="team-list-container">
+            <div class="team-list active" data-content="L1" id="teamListL1">
+                </div>
+            
+            <div class="team-list" data-content="L2" id="teamListL2">
+                </div>
+
+            <div class="team-list" data-content="L3" id="teamListL3">
+                </div>
+            
+             <div class="empty-state" id="teamEmptyState">
+                <i class="fas fa-user-slash"></i>
+                <h3>Tim di Level Ini Masih Kosong</h3>
+                <p>Ajak teman Anda untuk mereferensikan orang lain untuk mengisi level ini.</p>
+            </div>
+        </div>
+        
+
+    </div> <div class="navbar" id="main-navbar">
+        <a href="dashboard.html" class="nav-item" data-nav-target="dashboard">
+            <i class="fas fa-home"></i>
+            Dashboard
+        </a>
+        <a href="myproduk.html" class="nav-item" data-nav-target="my-product">
+            <i class="fas fa-box-open"></i>
+            My Produk
+        </a>
+        <a href="team.html" class="nav-item active" data-nav-target="my-team">
+            <i class="fas fa-users"></i>
+            My Team
+        </a>
+        <a href="profil.html" class="nav-item" data-nav-target="profile">
+            <i class="fas fa-user-circle"></i>
+            Profil
+        </a>
+    </div>
+    
+    <script>
+        // =======================================
+        // 1. DATA SIMULASI TIM
+        // =======================================
+        const teamIncome = {
+            incomeL1: 0, 
+            incomeL2: 0, 
+            incomeL3: 0, 
+        };
+
+        const teamMembers = {
+            L1: [], 
+            L2: [], 
+            L3: []  
+        };
+        
+        // =======================================
+        // 2. FUNGSI UTILITY & FORMATTING
+        // =======================================
+        function formatRupiah(number) {
+            if (isNaN(number)) return 'Rp 0';
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(number);
+        }
+
+        function getInitials(name) {
+            if (!name) return 'U';
+            const parts = name.split(' ');
+            if (parts.length > 1) {
+                return (parts[0][0] + parts[1][0]).toUpperCase();
+            }
+            return parts[0][0].toUpperCase();
+        }
+        
+        function generateColor(id) {
+            const colors = ['#38A169', '#00A3B0', '#7FAD39', '#55B4B0', '#F68F53', '#A855F7'];
+            return colors[id % colors.length];
+        }
+        
+        // =======================================
+        // 3. FUNGSI REFERRAL LINK (DIPERBARUI)
+        // =======================================
+        function displayReferralLink() {
+            const userID = 'U-007890'; 
+            
+            // Dapatkan path saat ini, hapus nama file (team.html)
+            const currentPath = window.location.pathname.split('/').slice(0, -1).join('/');
+            const baseUrl = window.location.origin + currentPath; 
+            
+            // Format link: [BASE_URL]/register/join?ref=[USER_ID]
+            const referralLink = `${baseUrl}/register/join?ref=${userID}`;
+            
+            document.getElementById('referralLinkText').textContent = referralLink;
+        }
+
+        function copyReferralLink() {
+            const referralLinkTextElement = document.getElementById('referralLinkText');
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(referralLinkTextElement.textContent)
+                    .then(() => {
+                        alert('Link referral berhasil disalin!');
+                    })
+                    .catch(err => {
+                        console.error('Gagal menyalin:', err);
+                        fallbackCopyTextToClipboard(referralLinkTextElement.textContent);
+                    });
+            } else {
+                fallbackCopyTextToClipboard(referralLinkTextElement.textContent);
+            }
+        }
+        
+        function fallbackCopyTextToClipboard(text) {
+             const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed"; 
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                const msg = successful ? 'berhasil' : 'gagal';
+                alert('Link referral ' + msg + ' disalin (mode lama).');
+            } catch (err) {
+                alert('Gagal menyalin link referral.');
+            }
+
+            document.body.removeChild(textArea);
+        }
+
+        // =======================================
+        // 4. FUNGSI RENDERING PENDAPATAN
+        // =======================================
+        function renderIncomeSummary() {
+            document.getElementById('incomeL1').textContent = formatRupiah(teamIncome.incomeL1);
+            document.getElementById('incomeL2').textContent = formatRupiah(teamIncome.incomeL2);
+            document.getElementById('incomeL3').textContent = formatRupiah(teamIncome.incomeL3);
+        }
+
+
+        // =======================================
+        // 5. FUNGSI RENDERING DAFTAR ANGGOTA
+        // =======================================
+        function createMemberItem(member) {
+            const item = document.createElement('div');
+            item.classList.add('member-item');
+
+            item.innerHTML = `
+                <div class="member-info">
+                    <div class="member-icon" style="background-color: ${generateColor(member.id)};">
+                        ${getInitials(member.name)}
+                    </div>
+                    <div class="member-details">
+                        <h5>${member.name}</h5>
+                        <p>ID: ${member.phone.replace(/(\d{4})xxxx(\d{4})/, '$1....$2')}</p>
+                        <p>Aktivitas: ${member.lastActive}</p>
+                    </div>
+                </div>
+                <div class="member-stats">
+                    <div class="commission">${formatRupiah(member.commission)}</div>
+                    <div class="level">Komisi ${member.level}</div>
+                </div>
+            `;
+            return item;
+        }
+
+        function renderTeamList(level) {
+            const targetElement = document.getElementById(`teamList${level}`);
+            const members = teamMembers[level] || [];
+            const teamEmptyState = document.getElementById('teamEmptyState');
+            
+            targetElement.innerHTML = '';
+            
+            document.querySelectorAll('.team-list').forEach(list => list.classList.remove('active'));
+            
+            if (members.length === 0) {
+                document.querySelectorAll('.team-list').forEach(list => list.style.display = 'none');
+                teamEmptyState.style.display = 'block'; 
+                targetElement.classList.add('active');
+            } else {
+                members.forEach(member => {
+                    targetElement.appendChild(createMemberItem(member));
+                });
+                teamEmptyState.style.display = 'none';
+                document.querySelectorAll('.team-list').forEach(list => list.style.display = 'none');
+                targetElement.classList.add('active');
+                targetElement.style.display = 'flex';
+            }
+        }
+        
+        // Fungsi untuk mengontrol pergantian tab
+        function switchTab(level) {
+            document.querySelectorAll('.tab-button-level').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.querySelector(`.tab-button-level[data-level="${level}"]`);
+            if (activeBtn) activeBtn.classList.add('active');
+            
+            renderTeamList(level);
+        }
+
+
+        // =======================================
+        // 6. FUNGSI UTAMA & EVENT LISTENER
+        // =======================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const mainNavbar = document.getElementById('main-navbar');
+            const tabsNav = document.getElementById('team-tabs-nav');
+
+            // --- RENDER DATA ---
+            displayReferralLink(); // Link sudah diupdate
+            renderIncomeSummary(); 
+            
+            // --- LOGIKA TAB ---
+            tabsNav.addEventListener('click', function(e) {
+                const targetButton = e.target.closest('.tab-button-level');
+                if (targetButton) {
+                    const targetLevel = targetButton.getAttribute('data-level');
+                    switchTab(targetLevel);
+                }
+            });
+            
+            // Inisialisasi: Tampilkan Level 1 saat pertama dimuat
+            switchTab('L1');
+
+            // --- LOGIKA ANIMASI & LOADING ---
+            setTimeout(() => {
+                if (loadingOverlay) loadingOverlay.classList.add('hidden');
+            }, 500);
+
+            if (mainNavbar) mainNavbar.classList.add('animate-in');
+            
+            // --- LOGIKA NAVBAR AKTIF ---
+            const navItems = document.querySelectorAll('.nav-item');
+            const currentPage = 'team.html'; 
+
+            navItems.forEach(i => i.classList.remove('active'));
+            const activeNav = document.querySelector('.nav-item[href="' + currentPage + '"]');
+            if (activeNav) {
+                activeNav.classList.add('active');
+            } else {
+                const fallbackNav = document.querySelector('.nav-item[data-nav-target="my-team"]');
+                if (fallbackNav) fallbackNav.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

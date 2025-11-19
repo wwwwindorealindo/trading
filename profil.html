@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Akun - RaRock (Tema Putih-Teal-Hijau)</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================= */
+        /* 1. VARIABEL & RESET DASAR (Tema PUTIH-TEAL-HIJAU) */
+        /* ======================================= */
+        :root {
+            --color-bg-light: #ffffff;    
+            --color-card-bg: #ebecf0;     
+            --color-text-dark: #2d3748;   
+            --color-text-gray: #718096;   
+            --color-border-light: #c2c9d1; 
+            --color-accent-main: #00A3B0; 
+            --color-accent-secondary: #38A169; 
+            --color-red-tag: #C53030;     
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--color-bg-light); 
+            color: var(--color-text-dark); 
+            padding-bottom: 100px; 
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 20px 20px 0 20px; 
+        }
+        
+        /* [HEADER PROFIL, SALDO, MENU, NAVBAR CSS DARI SEBELUMNYA] */
+        .profile-section { background-color: var(--color-bg-light); margin-bottom: 25px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .user-icon { display: flex; align-items: center; gap: 15px; }
+        .user-avatar { width: 45px; height: 45px; border-radius: 50%; background-color: var(--color-accent-main); display: flex; justify-content: center; align-items: center; }
+        .user-avatar i { font-size: 24px; color: var(--color-bg-light); }
+        .user-greeting { font-size: 20px; font-weight: 700; color: var(--color-accent-main); font-family: 'Poppins', sans-serif; }
+        .notification-icons i { font-size: 24px; color: var(--color-text-dark); margin-left: 15px; }
+        .profile-details-container { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--color-border-light); padding-top: 15px; }
+        .detail-item { display: flex; justify-content: space-between; font-size: 16px; color: var(--color-text-gray); }
+        .detail-item strong { color: var(--color-text-dark); font-weight: 600; }
+        hr { border: 0; border-top: 1px solid var(--color-border-light) !important; margin: 20px 0; }
+        .balance-card { background-color: var(--color-card-bg); padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); margin-bottom: 25px; }
+        .balance-title { font-size: 14px; color: var(--color-text-gray); margin-bottom: 5px; }
+        .balance-value { font-size: 30px; font-weight: 700; font-family: 'Poppins', sans-serif; margin-bottom: 15px; display: flex; align-items: center; color: var(--color-text-dark); }
+        .balance-value span.currency { font-size: 20px; margin-right: 5px; }
+        .sub-balance-row { display: flex; justify-content: space-between; font-size: 15px; color: var(--color-text-gray); padding: 5px 0; border-top: 1px dashed var(--color-border-light); }
+        .sub-balance-row:first-of-type { border-top: none; }
+        .sub-balance-row .amount { font-weight: 600; color: var(--color-accent-secondary); }
+        .action-buttons { display: flex; gap: 15px; margin-top: 20px; }
+        .btn-action { flex: 1; padding: 12px 0; text-align: center; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px; transition: all 0.2s; position: relative; overflow: hidden; z-index: 10; display: inline-block; }
+        .btn-action.withdraw { background-color: transparent; color: var(--color-text-dark); border: 1px solid var(--color-border-light); }
+        .btn-action.withdraw:hover { background-color: var(--color-border-light); }
+        .btn-action.deposit { background-color: var(--color-accent-main); color: var(--color-bg-light); border: none; }
+        .btn-action.deposit:hover { background-color: var(--color-accent-secondary); }
+        .btn-action.deposit::after {
+            content: ''; position: absolute; top: 0; left: -120%; width: 40px; height: 100%;
+            background: linear-gradient( 90deg, transparent, rgba(255, 255, 255, 0.7), transparent );
+            transform: skewX(-35deg); animation: shine 1.5s infinite; 
+        }
+        @keyframes shine { 0% { left: -120%; } 100% { left: 150%; } }
+        .btn-action.deposit:hover::after { animation-duration: 0.8s; }
+        .menu-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; padding: 10px 0; }
+        .menu-item { display: flex; justify-content: space-between; align-items: center; background-color: var(--color-card-bg); padding: 15px 20px; border-radius: 8px; text-decoration: none; color: var(--color-text-dark); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); transition: background-color 0.2s; }
+        .menu-item:hover { background-color: var(--color-border-light); }
+        .menu-label { display: flex; align-items: center; gap: 15px; font-size: 16px; font-weight: 500; }
+        .menu-label i { font-size: 18px; color: var(--color-accent-main); }
+        .menu-arrow i { color: var(--color-text-gray); }
+        .logout-item .menu-label { color: var(--color-red-tag); }
+        .logout-item .menu-label i { color: var(--color-red-tag); }
+        .navbar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); width: calc(100% - 40px); max-width: 430px; display: flex; justify-content: space-around; align-items: center; background-color: rgba(0,0,0,0); border: 1px solid var(--color-border-light); backdrop-filter: blur(5px); height: 70px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); padding: 5px 0; transition: none; opacity: 0; }
+        @keyframes slideInUp { 0% { opacity: 0; transform: translateX(-50%) translateY(100px); } 100% { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        .navbar.animate-in { animation: slideInUp 0.5s ease-out forwards; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--color-text-gray); font-size: 11px; font-weight: 500; padding: 8px 0; flex-grow: 1; position: relative; transition: color 0.3s ease; }
+        .nav-item i { font-size: 22px; margin-bottom: 2px; transition: transform 0.3s ease, color 0.3s ease; }
+        .nav-item.active { color: var(--color-accent-main); }
+        .nav-item.active i { transform: translateY(-5px); color: var(--color-accent-main); }
+        .nav-item.active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 30px; height: 3px; background-color: var(--color-accent-main); border-radius: 2px; transition: width 0.3s ease; }
+        @media (min-width: 450px) { .navbar { width: 430px; } }
+
+        /* ======================================= */
+        /* 6. LOADING SCREEN / PRELOADER */
+        /* ======================================= */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000; 
+            opacity: 1;
+            transition: opacity 0.5s ease-out, visibility 0.5s;
+            visibility: visible;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .spinner {
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            gap: 10px; 
+            padding: 20px; 
+            background-color: var(--color-bg-light); 
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .spinner i {
+            font-size: 40px;
+            color: var(--color-accent-main); 
+            animation: spin 1.2s linear infinite;
+            background-color: transparent; 
+            padding: 0;
+            box-shadow: none;
+        }
+        
+        .loading-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-text-dark);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner">
+            <i class="fas fa-sync-alt"></i>
+            <span class="loading-text">Memuat...</span>
+        </div>
+    </div>
+    <div class="container">
+        
+        <div class="profile-section">
+            <div class="top-bar">
+                <div class="user-icon">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span class="user-greeting">Hai, Dilan!</span>
+                </div>
+                
+                <div class="notification-icons">
+                    <i class="fas fa-cog"></i> 
+                </div>
+            </div>
+
+            <div class="profile-details-container">
+                <div class="detail-item">
+                    Nama Panggilan
+                    <strong>Dilan</strong>
+                </div>
+                <div class="detail-item">
+                    Nomor Telepon
+                    <strong>8176633981</strong>
+                </div>
+                <div class="detail-item">
+                    ID Pengguna
+                    <strong>1009876</strong>
+                </div>
+            </div>
+        </div>
+        
+        <hr>
+
+        <div class="balance-card">
+            
+            <p class="balance-title">Saldo Akun </p>
+            <p class="balance-value"><span class="currency">Rp</span> <span id="mainBalanceValue">0</span></p>
+            
+            <div class="sub-balance-row">
+                <span>Total Deposit</span>
+                <span class="amount">Rp 0</span>
+            </div>
+            <div class="sub-balance-row">
+                <span>Total Penarikan</span>
+                <span class="amount">Rp 0</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="withdraw.html" class="btn-action withdraw">Penarikan</a>
+                <a href="deposit.html" class="btn-action deposit">Deposit</a>
+            </div>
+        </div>
+
+
+        <div class="menu-list">
+            <a href="mybank.html" class="menu-item">
+                <span class="menu-label"><i class="fas fa-bank"></i> Kelola Akun Bank</span>
+                <span class="menu-arrow"><i class="fas fa-chevron-right"></i></span>
+            </a>
+            <a href="bonus.html" class="menu-item">
+                <span class="menu-label"><i class="fas fa-gift"></i> Klaim Kode Bonus</span>
+                <span class="menu-arrow"><i class="fas fa-chevron-right"></i></span>
+            </a>
+            <a href="transaction.html" class="menu-item">
+                <span class="menu-label"><i class="fas fa-notes-medical"></i> Catatan Keuangan</span>
+                <span class="menu-arrow"><i class="fas fa-chevron-right"></i></span>
+            </a>
+            <a href="acccount-security.html" class="menu-item">
+                <span class="menu-label"><i class="fas fa-user-shield"></i> Keamanan Akun</span>
+                <span class="menu-arrow"><i class="fas fa-chevron-right"></i></span>
+            </a>
+            <a href="#" class="menu-item">
+                <span class="menu-label"><i class="fas fa-headset"></i> Pusat Bantuan</span>
+                <span class="menu-arrow"><i class="fas fa-chevron-right"></i></span>
+            </a>
+            <a href="login.html" class="menu-item logout-item">
+                <span class="menu-label"><i class="fas fa-sign-out-alt"></i> Keluar (Logout)</span>
+                <span class="menu-arrow"><i class="fas fa-chevron-right"></i></span>
+            </a>
+        </div>
+
+    </div>
+
+    <div class="navbar" id="main-navbar">
+        <a href="dashboard.html" class="nav-item" data-nav-target="dashboard">
+            <i class="fas fa-home"></i>
+            Dashboard
+        </a>
+        <a href="myproduk.html" class="nav-item" data-nav-target="my-product">
+            <i class="fas fa-box-open"></i>
+            My Produk
+        </a>
+        <a href="team.html" class="nav-item" data-nav-target="my-team">
+            <i class="fas fa-users"></i>
+            My Team
+        </a>
+        <a href="profil.html" class="nav-item active" data-nav-target="profile">
+            <i class="fas fa-user-circle"></i>
+            Profil
+        </a>
+    </div>
+
+    <script>
+        // Fungsi untuk format angka menjadi format mata uang Indonesia (misalnya: 30.000)
+        function formatRupiah(number) {
+            // Memastikan angka adalah bilangan bulat sebelum diformat
+            number = Math.round(number); 
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        // Fungsi untuk animasi counter up
+        function animateCounter(targetElement, start, end, duration) {
+            if (end === 0) {
+                targetElement.textContent = formatRupiah(0);
+                return;
+            }
+            
+            const range = end - start;
+            let current = start;
+            
+            // Atur jumlah langkah total yang diinginkan (misal: 10 langkah)
+            const totalSteps = 20; 
+            // Hitung nilai increment per langkah
+            const increment = Math.ceil(range / totalSteps); 
+            
+            // Hitung interval waktu per langkah
+            const stepTime = Math.ceil(duration / totalSteps); 
+
+            const timer = setInterval(() => {
+                current += increment;
+
+                // Pastikan tidak melebihi nilai akhir
+                if (current >= end) {
+                    current = end;
+                    clearInterval(timer);
+                }
+
+                targetElement.textContent = formatRupiah(current);
+            }, stepTime);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const mainBalanceValueElement = document.getElementById('mainBalanceValue');
+            const finalBalance = 30000; // Saldo Akhir yang DITAMPILKAN (Rp 30.000)
+            
+            // 1. Sembunyikan Loading Screen setelah jeda singkat (simulasi loading 500ms)
+            setTimeout(() => {
+                loadingOverlay.classList.add('hidden');
+                
+                // Panggil fungsi animasi saldo setelah loading selesai
+                // DURASI: 400ms (0.4 detik) - Titik tengah yang ideal.
+                animateCounter(mainBalanceValueElement, 0, finalBalance, 400); 
+            }, 500);
+
+            // 2. Pemicu Animasi Navbar Slide-in
+            const mainNavbar = document.getElementById('main-navbar');
+            mainNavbar.classList.add('animate-in');
+            
+            // 3. Logika Status Active Navbar
+            const navItems = document.querySelectorAll('.nav-item');
+            const currentPage = 'profil.html'; 
+
+            navItems.forEach(i => i.classList.remove('active'));
+
+            const activeNav = document.querySelector('.nav-item[href="' + currentPage + '"]');
+            if (activeNav) {
+                activeNav.classList.add('active');
+            } else {
+                 const fallbackNav = document.querySelector('.nav-item[data-nav-target="profile"]');
+                 if (fallbackNav) fallbackNav.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

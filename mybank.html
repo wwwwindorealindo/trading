@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akun Bank Saya - RaRock</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================= */
+        /* 1. VARIABEL & RESET DASAR (Tema Putih-Teal) */
+        /* ======================================= */
+        :root {
+            --color-bg-light: #ffffff;    
+            --color-card-bg: #ebecf0;     
+            --color-text-dark: #2d3748;   
+            --color-text-gray: #718096;   
+            --color-accent-main: #00A3B0; 
+            --color-accent-secondary: #38A169;
+            --color-input-bg: #ffffff;    
+            --color-text-input: #2d3748;  
+            --color-border-light: #c2c9d1; 
+            --color-red-error: #ff3b30;     
+            --color-blue-info: #3182CE;   
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.15s ease-out;
+        }
+
+        body {
+            background-color: var(--color-bg-light);
+            color: var(--color-text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-grow: 1;
+            padding-bottom: 20px;
+        }
+
+        /* ======================================= */
+        /* 2. HEADER */
+        /* ======================================= */
+        .page-header {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .page-header a {
+            color: var(--color-text-dark);
+            font-size: 20px;
+            text-decoration: none;
+            justify-self: start;
+        }
+        .page-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            grid-column: 2 / 3;
+            color: var(--color-text-dark);
+        }
+
+        /* ======================================= */
+        /* 3. INFORMASI & FORM */
+        /* ======================================= */
+        .info-box {
+            background-color: #e6f6ff;
+            border: 1px solid var(--color-blue-info);
+            border-left: 5px solid var(--color-blue-info); 
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+        .info-box p {
+            font-size: 14px;
+            color: var(--color-text-dark);
+            font-weight: 500;
+        }
+        .info-box p i {
+            margin-right: 8px;
+            color: var(--color-blue-info);
+        }
+
+        .form-section {
+            padding: 15px;
+            background-color: var(--color-card-bg);
+            border-radius: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: var(--color-text-gray);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        /* Styling Input Field */
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--color-border-light);
+            border-radius: 8px;
+            font-size: 16px;
+            color: var(--color-text-dark);
+            background-color: var(--color-input-bg);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: var(--color-accent-main);
+            box-shadow: 0 0 0 2px rgba(0, 163, 176, 0.2);
+        }
+        
+        /* GAYA KHUSUS UNTUK TOMBOL PEMILIHAN BANK (BUKAN DROPDOWN) */
+        .bank-select-trigger {
+            position: relative;
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--color-border-light);
+            border-radius: 8px;
+            font-size: 16px;
+            color: var(--color-text-dark);
+            background-color: var(--color-input-bg);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .bank-select-trigger:hover {
+            border-color: var(--color-accent-main);
+        }
+        .bank-select-trigger span {
+            color: var(--color-text-gray);
+        }
+        .bank-select-trigger.selected span {
+            color: var(--color-text-dark);
+            font-weight: 500;
+        }
+        .bank-select-trigger i {
+            color: var(--color-text-gray);
+        }
+
+        /* Tombol Simpan */
+        .btn-save-bank {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--color-accent-main); 
+            color: var(--color-bg-light); 
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 163, 176, 0.4);
+            margin-top: 20px;
+        }
+        .btn-save-bank:hover {
+             background-color: #008891;
+        }
+        .btn-save-bank:active {
+            transform: translateY(1px);
+        }
+        
+        .error-message {
+            color: var(--color-red-error);
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* ======================================= */
+        /* 4. MODAL OVERLAY (DAFTAR BANK) */
+        /* ======================================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none; 
+            justify-content: center;
+            align-items: flex-end; 
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.active {
+            display: flex; 
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: var(--color-bg-light);
+            width: 100%;
+            max-width: 450px;
+            max-height: 80%;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out; 
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .modal-header .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--color-text-gray);
+            cursor: pointer;
+        }
+
+        .bank-list {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .bank-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 10px;
+            border-bottom: 1px solid var(--color-card-bg);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .bank-item:last-child {
+            border-bottom: none;
+        }
+        .bank-item:hover {
+            background-color: var(--color-card-bg);
+        }
+        .bank-item i {
+            font-size: 20px;
+            color: var(--color-accent-main);
+            margin-right: 15px;
+        }
+        
+        /* Icon styling untuk membedakan Bank dan E-Wallet */
+        .bank-item.ewallet i {
+            color: var(--color-accent-secondary); /* Warna hijau untuk E-Wallet */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="page-header">
+            <a href="profil.html" aria-label="Kembali"><i class="fas fa-arrow-left"></i></a>
+            <h2>Akun Bank Saya</h2>
+            <div class="right-placeholder"></div>
+        </div>
+
+        <div class="info-box">
+            <p><i class="fas fa-exclamation-circle"></i> Harap masukkan detail rekening bank yang valid dan atas nama Anda sendiri. Akun ini akan digunakan untuk proses penarikan dana.</p>
+        </div>
+
+        <div class="form-section">
+            <form id="bankAccountForm">
+                
+                <div class="form-group">
+                    <label for="account-name">Nama Pemilik Rekening</label>
+                    <input type="text" id="account-name" class="input-field" placeholder="Masukkan Nama Anda">
+                    <div class="error-message" id="error-name">Nama pemilik harus diisi.</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Pilih Bank / E-Wallet</label>
+                    <div class="bank-select-trigger" id="bank-select-trigger">
+                        <span id="selected-bank-display">Pilih Bank / E-Wallet</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <input type="hidden" id="bank-name-hidden" value="">
+                    <div class="error-message" id="error-bank">Bank harus dipilih.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="account-number">Nomor Rekening / E-Wallet</label>
+                    <input type="text" id="account-number" class="input-field" placeholder="Masukkan Nomor Rekening">
+                    <div class="error-message" id="error-number">Nomor rekening harus diisi dan berupa angka.</div>
+                </div>
+
+                <button type="submit" class="btn-save-bank">Simpan Akun Bank</button>
+            </form>
+        </div>
+
+    </div>
+    
+    <div class="modal-overlay" id="bankModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Pilih Bank atau E-Wallet</h3>
+                <button type="button" class="close-btn" id="closeModalBtn"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="bank-list" id="bankListContainer">
+                <div class="bank-item" data-value="bca" data-text="BCA">
+                    <i class="fas fa-building"></i> BCA
+                </div>
+                <div class="bank-item" data-value="bri" data-text="BRI">
+                    <i class="fas fa-building"></i> BRI
+                </div>
+                <div class="bank-item" data-value="mandiri" data-text="Mandiri">
+                    <i class="fas fa-building"></i> Mandiri
+                </div>
+                <div class="bank-item" data-value="bni" data-text="BNI">
+                    <i class="fas fa-building"></i> BNI
+                </div>
+                <div class="bank-item" data-value="cimb" data-text="CIMB Niaga">
+                    <i class="fas fa-building"></i> CIMB Niaga
+                </div>
+                <div class="bank-item" data-value="permata" data-text="Permata">
+                    <i class="fas fa-building"></i> Permata
+                </div>
+                <div class="bank-item" data-value="danamon" data-text="Danamon">
+                    <i class="fas fa-building"></i> Danamon
+                </div>
+                <div class="bank-item" data-value="panin" data-text="Panin">
+                    <i class="fas fa-building"></i> Panin
+                </div>
+                <div class="bank-item" data-value="maybank" data-text="Maybank">
+                    <i class="fas fa-building"></i> Maybank
+                </div>
+                <div class="bank-item" data-value="seabank" data-text="SeaBank">
+                    <i class="fas fa-building"></i> SeaBank
+                </div>
+                
+
+
+                <div class="bank-item ewallet" data-value="dana" data-text="DANA">
+                    <i class="fas fa-wallet"></i> DANA
+                </div>
+                <div class="bank-item ewallet" data-value="gopay" data-text="GOPAY">
+                    <i class="fas fa-wallet"></i> GOPAY
+                </div>
+                <div class="bank-item ewallet" data-value="ovo" data-text="OVO">
+                    <i class="fas fa-wallet"></i> OVO
+                </div>
+                <div class="bank-item ewallet" data-value="linkaja" data-text="LinkAja">
+                    <i class="fas fa-wallet"></i> LinkAja
+                </div>
+                <div class="bank-item ewallet" data-value="shopeepay" data-text="ShopeePay">
+                    <i class="fas fa-wallet"></i> ShopeePay
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('bankAccountForm');
+            const accountNameInput = document.getElementById('account-name');
+            const accountNumberInput = document.getElementById('account-number');
+            const bankSelectTrigger = document.getElementById('bank-select-trigger');
+            const selectedBankDisplay = document.getElementById('selected-bank-display');
+            const bankNameHiddenInput = document.getElementById('bank-name-hidden');
+            
+            const bankModal = document.getElementById('bankModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const bankListContainer = document.getElementById('bankListContainer');
+            
+            // =======================================
+            // FUNGSI UTILITY
+            // =======================================
+
+            function showError(elementId, message) {
+                const errorElement = document.getElementById('error-' + elementId);
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+
+            function hideError(elementId) {
+                document.getElementById('error-' + elementId).style.display = 'none';
+            }
+            
+            // FUNGSI UNTUK MENUTUP MODAL
+            function closeModal() {
+                // Hapus kelas active untuk memulai transisi penutupan
+                bankModal.classList.remove('active');
+                
+                // Setelah transisi selesai, sembunyikan display-nya
+                setTimeout(() => {
+                    bankModal.style.display = 'none';
+                }, 300); // 300ms sesuai durasi transisi CSS
+            }
+
+            // FUNGSI UNTUK MEMBUKA MODAL DENGAN ANIMASI HALUS
+            function openModal() {
+                // 1. Atur display menjadi flex agar modal terlihat
+                bankModal.style.display = 'flex';
+                
+                // 2. Gunakan requestAnimationFrame untuk memastikan browser mendaftarkan perubahan display
+                requestAnimationFrame(() => {
+                    // 3. Tambahkan kelas 'active' untuk memicu transisi opacity dan transform
+                    bankModal.classList.add('active');
+                });
+            }
+
+
+            // =======================================
+            // EVENT LISTENERS MODAL
+            // =======================================
+
+            // 1. Pemicu Buka Modal
+            bankSelectTrigger.addEventListener('click', openModal);
+
+            // 2. Pemicu Tutup Modal
+            closeModalBtn.addEventListener('click', closeModal);
+            bankModal.addEventListener('click', function(e) {
+                // Tutup jika klik di area overlay, bukan konten modal
+                if (e.target === bankModal) {
+                    closeModal();
+                }
+            });
+
+            // 3. Penanganan Pemilihan Bank dari Daftar
+            bankListContainer.addEventListener('click', function(e) {
+                const bankItem = e.target.closest('.bank-item');
+                // Pastikan yang diklik bukan divider (yang tidak punya data-value)
+                if (bankItem && bankItem.getAttribute('data-value')) { 
+                    const value = bankItem.getAttribute('data-value');
+                    const text = bankItem.getAttribute('data-text');
+                    
+                    // Update input tersembunyi dan tampilan
+                    bankNameHiddenInput.value = value;
+                    selectedBankDisplay.textContent = text;
+                    bankSelectTrigger.classList.add('selected');
+                    
+                    hideError('bank'); 
+                    closeModal();
+                }
+            });
+
+            // =======================================
+            // EVENT LISTENERS FORM
+            // =======================================
+
+            // Memastikan input nomor rekening hanya menerima angka
+            accountNumberInput.addEventListener('input', function(e) {
+                this.value = this.value.replace(/\D/g, '');
+                hideError('number');
+            });
+
+            // Validasi on change
+            accountNameInput.addEventListener('input', () => hideError('name'));
+
+
+            // 4. Logika Submit Formulir
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                let isValid = true;
+                const nameValue = accountNameInput.value.trim();
+                const bankValue = bankNameHiddenInput.value; 
+                const numberValue = accountNumberInput.value.trim();
+
+                // 1. Validasi Nama Pemilik
+                if (nameValue === "") {
+                    showError('name', 'Nama pemilik rekening wajib diisi.');
+                    isValid = false;
+                } else if (!/^[a-zA-Z\s]+$/.test(nameValue)) {
+                    showError('name', 'Nama pemilik hanya boleh berisi huruf dan spasi.');
+                    isValid = false;
+                } else {
+                    hideError('name');
+                }
+
+                // 2. Validasi Bank
+                if (bankValue === "") {
+                    showError('bank', 'Pilih salah satu Bank atau E-Wallet.');
+                    isValid = false;
+                } else {
+                    hideError('bank');
+                }
+
+                // 3. Validasi Nomor Rekening/HP
+                if (numberValue === "") {
+                    showError('number', 'Nomor rekening/HP wajib diisi.');
+                    isValid = false;
+                } else if (!/^\d+$/.test(numberValue)) {
+                    showError('number', 'Nomor rekening/HP hanya boleh berisi angka.');
+                    isValid = false;
+                } else if (numberValue.length < 5 || numberValue.length > 20) {
+                     showError('number', 'Nomor rekening/HP minimal 5 digit dan maksimal 20 digit.');
+                    isValid = false;
+                } else {
+                    hideError('number');
+                }
+
+                
+                if (isValid) {
+                    const bankText = selectedBankDisplay.textContent; 
+                    alert(`[SUKSES] Akun Bank ${bankText} atas nama ${nameValue} dengan No. ${numberValue} berhasil disimpan.`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penarikan Dana (Withdraw) - RaRock</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================= */
+        /* 1. KEYFRAMES KHUSUS KILAU */
+        /* ======================================= */
+        @keyframes shine {
+            0% { 
+                transform: translateX(-100%) skewX(-30deg);
+            }
+            100% { 
+                transform: translateX(200%) skewX(-30deg);
+            }
+        }
+
+
+        /* ======================================= */
+        /* 2. VARIABEL & RESET DASAR (Tema Putih-Teal) */
+        /* ======================================= */
+        :root {
+            --color-bg-light: #ffffff;    
+            --color-card-bg: #ebecf0;     
+            --color-text-dark: #2d3748;   
+            --color-text-gray: #718096;   
+            --color-accent-main: #00A3B0; 
+            --color-accent-secondary: #38A169; /* Warna Hijau untuk Saldo */
+            --color-input-bg: #ebecf0;    
+            --color-text-input: #00A3B0;  
+            --color-border-light: #c2c9d1; 
+            --color-red-tag: #ff3b30;     
+            --color-blue-info: #3182CE;   
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.15s ease-out;
+        }
+
+        body {
+            background-color: var(--color-bg-light);
+            color: var(--color-text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-grow: 1;
+            padding-bottom: 20px;
+        }
+
+        /* ======================================= */
+        /* 3. HEADER (Tengah) */
+        /* ======================================= */
+        .page-header {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .page-header a {
+            color: var(--color-text-dark);
+            font-size: 20px;
+            text-decoration: none;
+            justify-self: start;
+        }
+        .page-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            grid-column: 2 / 3;
+            color: var(--color-text-dark);
+        }
+        
+        /* ======================================= */
+        /* 4. SALDO BOX */
+        /* ======================================= */
+        .balance-info {
+            background-color: var(--color-accent-secondary); 
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+            color: var(--color-bg-light); 
+            position: relative; 
+            overflow: hidden; 
+            z-index: 1; 
+        }
+        
+        .balance-info::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent
+            );
+            transform: translateX(-100%) skewX(-30deg); 
+            animation: shine 3s infinite 0.5s; 
+            z-index: 2; 
+            pointer-events: none; 
+        }
+        
+        .balance-label, .balance-main {
+            position: relative;
+            z-index: 3; 
+        }
+
+        .balance-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8); 
+            margin-bottom: 5px;
+        }
+        .balance-main .amount {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        /* ======================================= */
+        /* 5. FORM & INPUT */
+        /* ======================================= */
+        .withdrawal-section {
+            margin-bottom: 30px;
+        }
+        .section-label {
+            font-size: 14px;
+            color: var(--color-text-gray); 
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Container untuk Detail Bank */
+        .bank-detail-container {
+            background-color: var(--color-card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid var(--color-border-light);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .bank-detail-container .detail-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 15px;
+        }
+        
+        .bank-detail-container .detail-row span:first-child {
+            color: var(--color-text-gray);
+            font-weight: 500;
+        }
+
+        .bank-detail-container .detail-row span:last-child {
+            color: var(--color-text-dark);
+            font-weight: 600;
+            text-align: right;
+            max-width: 60%; 
+            word-wrap: break-word;
+        }
+        
+        .bank-detail-container .bank-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--color-accent-main);
+            margin-bottom: 5px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        /* Input Penarikan */
+        .input-amount-container {
+            padding: 0 15px;
+            position: relative;
+            background-color: var(--color-card-bg); 
+            border-radius: 8px;
+            height: 50px; /* DITINGGIKAN SEDIKIT UNTUK FONT BARU */
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--color-border-light);
+        }
+
+        .input-amount-container input {
+            width: 100%;
+            background: none;
+            border: none;
+            outline: none;
+            font-size: 20px; /* DIUBAH DARI 24px */
+            font-weight: 700;
+            color: var(--color-text-input); 
+            padding: 0;
+            text-align: right;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+        .input-amount-container .currency-prefix {
+            font-size: 20px; /* DIUBAH DARI 24px */
+            font-weight: 700;
+            color: var(--color-text-gray); 
+            margin-right: 5px;
+            line-height: 1; /* Pastikan prefix sejajar dengan input */
+        }
+
+        /* Tombol */
+        .btn-withdraw-now {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--color-accent-main); 
+            color: var(--color-bg-light); 
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 163, 176, 0.4);
+            margin-bottom: 25px; 
+        }
+        .btn-withdraw-now:hover {
+             background-color: #008891;
+        }
+        .btn-withdraw-now:active {
+            transform: translateY(1px);
+        }
+        
+        /* Kotak Info/Instruksi */
+        .info-box {
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-blue-info);
+            border-left: 5px solid var(--color-blue-info); 
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .info-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-text-dark);
+            margin-bottom: 5px;
+        }
+        .info-box ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 10px;
+        }
+        .info-box li {
+            font-size: 13px;
+            color: var(--color-text-gray);
+            margin-bottom: 5px;
+        }
+        .info-box li i {
+            color: var(--color-blue-info);
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="page-header">
+            <a href="profil.html" aria-label="Kembali"><i class="fas fa-arrow-left"></i></a>
+            <h2>Penarikan Dana</h2>
+            <div class="right-placeholder"></div>
+        </div>
+
+        <div class="balance-info">
+            <p class="balance-label">Saldo yang Dapat Ditarik</p>
+            <p class="balance-main"><span class="amount" id="availableBalance">Rp 30.000</span></p>
+        </div>
+
+        <div class="withdrawal-section">
+            
+            <div class="form-group">
+                <p class="section-label">Akun Bank Tujuan</p>
+                <div class="bank-detail-container" id="bank-select">
+                    <div class="bank-name">DANA</div>
+                    <div class="detail-row">
+                        <span>No. Rekening</span>
+                        <span>085774979608</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Nama Pemilik</span>
+                        <span>DILAN</span>
+                    </div>
+                </div>
+                </div>
+
+            <div class="form-group">
+                <p class="section-label">Nominal Penarikan (Rp)</p>
+                <div class="input-amount-container">
+                    <span class="currency-prefix">Rp</span>
+                    <input type="text" pattern="[0-9]*" id="withdrawal-input" placeholder="Min. 50.000">
+                </div>
+            </div>
+            
+            <button class="btn-withdraw-now" id="btn-withdraw">Tarik Dana Sekarang</button>
+            
+            <div class="info-box">
+                <h3>Informasi Penting Penarikan</h3>
+                <ul>
+                    <li><i class="fas fa-money-bill-wave"></i> Batas Minimum: Rp 50.000 per transaksi.</li>
+                    <li><i class="fas fa-calendar-alt"></i> Batas Maksimum Harian: Rp 1.000.000.</li> 
+                    <li><i class="fas fa-clock"></i> Waktu Proses: Biasanya 5-15 menit (24/7).</li>
+                    <li><i class="fas fa-bank"></i> Pastikan akun bank Anda sudah benar.</li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputField = document.getElementById('withdrawal-input');
+            const btnWithdraw = document.getElementById('btn-withdraw');
+            const availableBalance = 30000; 
+            
+            // Detail bank tujuan yang sudah fix
+            const fixedBank = {
+                name: "DANA",
+                account: "085774979608",
+                owner: "DILAN"
+            };
+
+            // Batasan Nominal
+            const minWithdraw = 50000;
+            const maxAmount = 1000000; 
+
+
+            // Fungsi untuk membersihkan input dari karakter non-digit dan memformat dengan titik
+            function formatNumber(number) {
+                if (!number) return '';
+                // Hapus semua non-digit, lalu format dengan titik sebagai pemisah ribuan
+                return number.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            }
+
+            // Fungsi untuk mendapatkan nilai angka murni
+            function getRawAmount(input) {
+                return parseInt(input.replace(/\D/g, '') || 0);
+            }
+            
+            // Masukkan saldo yang tersedia (untuk display, tanpa animasi di halaman ini)
+            document.getElementById('availableBalance').textContent = 'Rp ' + formatNumber(availableBalance);
+
+
+            // Logika Input Manual: Memfilter input dan menerapkan format titik
+            inputField.addEventListener('input', function() {
+                const rawValue = this.value.replace(/\D/g, '');
+                
+                let finalValue = getRawAmount(rawValue);
+
+                // Pembatasan Input Maksimal (1 Juta)
+                if (finalValue > maxAmount) {
+                    finalValue = maxAmount;
+                }
+                
+                // Format ulang input dengan pemisah ribuan
+                this.value = formatNumber(finalValue.toString());
+            });
+
+            // Logika Tombol Tarik Dana Sekarang
+            btnWithdraw.addEventListener('click', function() {
+                const finalAmount = getRawAmount(inputField.value);
+                
+                
+                if (finalAmount < minWithdraw) {
+                    alert(`Gagal: Nominal penarikan minimal adalah Rp ${formatNumber(minWithdraw)}.`);
+                    return;
+                }
+
+                if (finalAmount > maxAmount) {
+                    alert(`Gagal: Nominal penarikan maksimum adalah Rp ${formatNumber(maxAmount)}.`);
+                    return;
+                }
+                
+                if (finalAmount > availableBalance) {
+                    alert(`Gagal: Saldo Anda tidak mencukupi. Saldo tersedia: Rp ${formatNumber(availableBalance)}.`);
+                    return;
+                }
+                
+                // Jika semua validasi lolos
+                alert(`[PENARIKAN DIPROSES] Penarikan dana sebesar Rp ${formatNumber(finalAmount)} ke ${fixedBank.name} (${fixedBank.owner}) akan diproses. Mohon tunggu 5-15 menit.`);
+            });
+        });
+    </script>
+</body>
+</html>

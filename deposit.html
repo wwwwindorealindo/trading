@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit Akun (Tema Terang dengan Kilau)</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================= */
+        /* 1. KEYFRAMES KHUSUS KILAU */
+        /* ======================================= */
+        @keyframes shine {
+            0% { 
+                /* Mulai dari luar kiri atas */
+                transform: translateX(-100%) skewX(-30deg);
+            }
+            100% { 
+                /* Berakhir di luar kanan bawah */
+                transform: translateX(200%) skewX(-30deg);
+            }
+        }
+
+
+        /* ======================================= */
+        /* 2. VARIABEL & RESET DASAR (Tema Putih-Teal) */
+        /* ======================================= */
+        :root {
+            /* TEMA UTAMA: Putih - Teal - Hijau */
+            --color-bg-light: #ffffff;    /* Background utama */
+            --color-card-bg: #ebecf0;     /* Latar belakang kartu/abu muda */
+            --color-text-dark: #2d3748;   /* Teks utama gelap */
+            --color-text-gray: #718096;   /* Teks sekunder/placeholder */
+            --color-accent-main: #00A3B0; /* TEAL (Primary Button) */
+            --color-input-bg: #008891;    /* Background Input Deposit (Teal lebih gelap) */
+            --color-text-input: #ffffff;  /* Teks Input Putih */
+            --color-border-light: #c2c9d1; /* Garis pemisah */
+            --color-red-tag: #ff3b30;     /* Tidak berubah */
+            --color-blue-info: #3182CE;   /* Warna biru untuk info/instruksi */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.15s ease-out;
+        }
+
+        body {
+            background-color: var(--color-bg-light);
+            color: var(--color-text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-grow: 1;
+            padding-bottom: 20px;
+        }
+
+        /* ======================================= */
+        /* 3. HEADER (Tengah) */
+        /* ======================================= */
+        .page-header {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .page-header a {
+            color: var(--color-text-dark);
+            font-size: 20px;
+            text-decoration: none;
+            justify-self: start;
+        }
+        .page-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            grid-column: 2 / 3;
+            color: var(--color-text-dark);
+        }
+        .page-header .right-placeholder {
+            justify-self: end;
+        }
+        
+        /* ======================================= */
+        /* 4. SALDO BOX MINIMALIS DENGAN KILAU */
+        /* ======================================= */
+        .balance-info {
+            background-color: var(--color-accent-main); 
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+            color: var(--color-bg-light); 
+            
+            /* ** CSS KRUSIAL UNTUK EFEK KILAU ** */
+            position: relative; 
+            overflow: hidden; /* Penting agar kilau tidak keluar kotak */
+            z-index: 1; 
+            /* ---------------------------------- */
+        }
+        
+        /* Elemen Kilau */
+        .balance-info::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), /* Intensitas kilau */
+                transparent
+            );
+            /* Transformasi awal: di luar area pandang */
+            transform: translateX(-100%) skewX(-30deg); 
+            /* Animasi */
+            animation: shine 3s infinite 0.5s; 
+            z-index: 2; 
+            pointer-events: none; /* Agar tidak mengganggu klik/interaksi */
+        }
+        
+        /* Konten di dalam kotak saldo harus di atas kilau */
+        .balance-label, .balance-main {
+            position: relative;
+            z-index: 3; 
+        }
+
+        .balance-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8); 
+            margin-bottom: 5px;
+        }
+        .balance-main {
+            display: flex;
+            align-items: flex-end;
+        }
+        .balance-main .amount {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .balance-main .rp {
+            font-size: 18px;
+            margin-bottom: 5px;
+            margin-left: 2px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .tag-unbound {
+            background-color: var(--color-red-tag);
+            color: var(--color-bg-light); 
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+            margin-left: 10px;
+            line-height: 1.5;
+        }
+
+        /* ======================================= */
+        /* 5. INPUT & TOMBOL (Tidak Berubah) */
+        /* ======================================= */
+        .deposit-section {
+            margin-bottom: 30px;
+        }
+        .section-label {
+            font-size: 14px;
+            color: var(--color-text-gray); 
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .input-deposit-container {
+            display: flex;
+            background-color: #ebecf0; 
+            border-radius: 8px;
+            align-items: center; 
+            justify-content: center; 
+            padding: 0;
+            height: 65px; 
+            margin-bottom: 20px;
+            border: 1px solid var(--color-input-bg); 
+        }
+        .input-deposit-container input {
+            width: 100%;
+            height: 100%;
+            background: none;
+            border: none;
+            color: #00A3B0; 
+            font-size: 24px;
+            font-weight: 700;
+            outline: none;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+            caret-color: var(--color-text-input); 
+        }
+        .input-deposit-container input::placeholder {
+            color: var(--color-text-gray); 
+        }
+        .channel-card {
+            background-color: var(--color-card-bg); 
+            border-radius: 8px;
+            padding: 15px;
+            border: 2px solid var(--color-accent-main); 
+            box-shadow: 0 0 8px rgba(0, 163, 176, 0.2);
+            position: relative;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .channel-card .title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--color-text-dark);
+        }
+        .channel-card .range {
+            font-size: 12px;
+            color: var(--color-text-gray); 
+        }
+        .channel-card .check-icon {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: var(--color-accent-main); 
+            font-size: 18px;
+        }
+        .quick-amounts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            margin-bottom: 30px;
+        }
+        .quick-amounts button {
+            background-color: var(--color-card-bg); 
+            color: var(--color-text-dark); 
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            flex-grow: 1;
+            min-width: calc(33.33% - 7px);
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        .quick-amounts button.selected {
+            background-color: var(--color-accent-main); 
+            color: var(--color-bg-light); 
+            font-weight: 700;
+        }
+        .btn-deposit-now {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--color-accent-main); 
+            color: var(--color-bg-light); 
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 163, 176, 0.4);
+            margin-bottom: 25px; /* Tambahan margin di bawah tombol */
+        }
+        .btn-deposit-now:hover {
+             background-color: #008891;
+        }
+        .btn-deposit-now:active {
+            transform: translateY(1px);
+        }
+        
+        /* ======================================= */
+        /* 6. STYLE INSTRUKSI BARU */
+        /* ======================================= */
+        .instruction-box {
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border-light);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .instruction-box h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--color-blue-info); /* Judul warna biru */
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .instruction-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .instruction-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--color-text-dark);
+        }
+        .instruction-step:last-child {
+            margin-bottom: 0;
+        }
+        .instruction-step .number-circle {
+            background-color: var(--color-blue-info);
+            color: var(--color-bg-light);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0;
+            margin-top: 2px; /* Penyelarasan dengan teks */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="page-header">
+            <a href="profil.html" aria-label="Kembali"><i class="fas fa-arrow-left"></i></a>
+            <h2>Deposit</h2>
+            <div class="right-placeholder"></div>
+        </div>
+
+        <div class="balance-info">
+            <p class="balance-label">Saldo Akun</p>
+            <div class="balance-main">
+                
+                <span class="amount">Rp 30.000</span>
+                
+             
+
+            </div>
+        </div>
+
+        <div class="deposit-section">
+            <p class="section-label">Masukkan Nominal Deposit (Rp)</p>
+            <div class="input-deposit-container">
+                <input type="text" pattern="[0-9]*" id="deposit-input" placeholder="Min. 50000">
+            </div>
+
+            <p class="section-label">Pilih Saluran Deposit</p>
+            <div class="channel-card">
+                <div class="title">Saluran Pembayaran 1</div>
+                <div class="range">Kisaran Jumlah: Rp 100.000 - Rp 10.000.000</div>
+                <span class="check-icon"><i class="fas fa-check-circle"></i></span>
+            </div>
+            
+            <p class="section-label">Pilihan Cepat</p>
+            <div class="quick-amounts">
+                <button data-amount="100000">100.000</button>
+                <button class="selected" data-amount="200000">200.000</button>
+                <button data-amount="300000">300.000</button>
+                <button data-amount="400000">400.000</button>
+                <button data-amount="500000">500.000</button>
+                <button data-amount="600000">600.000</button>
+                <button data-amount="700000">700.000</button>
+                <button data-amount="800000">800.000</button>
+                <button data-amount="900000">900.000</button>
+                <button data-amount="1000000">1.000.000</button>
+                <button data-amount="2000000">2.000.000</button>
+            </div>
+            
+            <button class="btn-deposit-now">Deposit Sekarang</button>
+            
+            <div class="instruction-box">
+                <h3><i class="fas fa-info-circle"></i> Langkah Melakukan Deposit</h3>
+                <ol class="instruction-list">
+                    <li class="instruction-step">
+                        <span class="number-circle">1</span>
+                        Tentukan Nominal Deposit yang Anda inginkan (minimal Rp 100.000). Anda dapat mengetik manual atau memilih dari Pilihan Cepat.
+                    </li>
+                    <li class="instruction-step">
+                        <span class="number-circle">2</span>
+                        Pastikan Saluran Deposit sudah terpilih (Saluran Pembayaran 1).
+                    </li>
+                    <li class="instruction-step">
+                        <span class="number-circle">3</span>
+                        Klik tombol Deposit Sekarang.
+                    </li>
+                    <li class="instruction-step">
+                        <span class="number-circle">4</span>
+                        Anda akan diarahkan ke halaman pembayaran dan mendapatkan kode pembayaran seperti kode QRIS
+                    </li>
+                    <li class="instruction-step">
+                        <span class="number-circle">5</span>
+                        Lakukan pembayaran ke kode QRIS yang muncul sesuai nominal yang Anda masukkan di langkah 1.
+                    </li>
+                    <li class="instruction-step">
+                        <span class="number-circle">6</span>
+                        Setelah pembayaran berhasil, saldo akan masuk ke akun Anda secara otomatis dalam waktu 1-5 menit.
+                    </li>
+                </ol>
+            </div>
+            </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputField = document.getElementById('deposit-input');
+            const quickButtons = document.querySelectorAll('.quick-amounts button');
+            const depositButton = document.querySelector('.btn-deposit-now');
+
+            let currentAmount = document.querySelector('.quick-amounts button.selected')?.getAttribute('data-amount') || '0'; 
+
+            // Fungsi untuk membersihkan input dari karakter non-digit
+            function formatAmount(rawAmount) {
+                if (!rawAmount || rawAmount === '0') return '';
+                return rawAmount.replace(/\D/g, ''); 
+            }
+
+            // Fungsi untuk mendapatkan nilai angka murni
+            function getRawAmount(input) {
+                return parseInt(input.replace(/\D/g, '') || 0);
+            }
+
+            // Fungsi untuk memperbarui Input dan Tombol Cepat
+            function updateInput(newAmount) {
+                currentAmount = newAmount;
+                // Masukkan nilai murni ke input field (tanpa format titik)
+                inputField.value = formatAmount(currentAmount); 
+
+                quickButtons.forEach(btn => {
+                    if (btn.getAttribute('data-amount') === currentAmount) {
+                        btn.classList.add('selected');
+                    } else {
+                        btn.classList.remove('selected');
+                    }
+                });
+            }
+
+            // Inisialisasi: Perbarui input dengan nilai tombol yang sedang aktif (200000)
+            updateInput(currentAmount);
+
+            // Logika Tombol Cepat
+            quickButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const amount = this.getAttribute('data-amount');
+                    updateInput(amount);
+                });
+            });
+
+            // Logika Input Manual
+            inputField.addEventListener('input', function() {
+                let rawValue = this.value.replace(/\D/g, '');
+                // Batasi panjang input (misal 9 digit = 999.999.999)
+                if (rawValue.length > 9) {
+                     rawValue = rawValue.substring(0, 9);
+                }
+                
+                this.value = rawValue;
+                currentAmount = rawValue;
+
+                // Hapus status selected pada tombol cepat karena nominal diinput manual
+                quickButtons.forEach(btn => btn.classList.remove('selected'));
+            });
+            
+            // Logika Tombol Deposit Sekarang
+            depositButton.addEventListener('click', function() {
+                const finalAmount = getRawAmount(inputField.value);
+                const minDeposit = 50000;
+
+                if (finalAmount < minDeposit) {
+                    alert(`Gagal: Jumlah deposit minimal adalah Rp ${minDeposit.toLocaleString('id-ID')}.`);
+                    return;
+                }
+                
+                // Di sini Anda akan mengarahkan pengguna ke halaman pembayaran
+                alert(`[DEPOSIT BERHASIL] Melanjutkan deposit Rp ${finalAmount.toLocaleString('id-ID')} ke Saluran Pembayaran 1.`);
+            });
+        });
+    </script>
+</body>
+</html>

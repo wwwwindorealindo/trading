@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Produk - Produk Aktif (Gaya Dashboard)</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================= */
+        /* 1. VARIABEL & RESET DASAR (Tema PUTIH-TEAL-HIJAU) */
+        /* ======================================= */
+        :root {
+            --color-bg-light: #ffffff;      
+            --color-card-bg: #ebecf0;        
+            --color-text-dark: #2d3748;      
+            --color-text-gray: #718096;      
+            --color-border-light: #c2c9d1;  
+            --color-accent-main: #00A3B0; /* TEAL (Primary Color) */
+            --color-accent-secondary: #38A169; /* HIJAU (Success) */
+            --color-red-tag: #C53030;      
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease-out;
+        }
+
+        body {
+            background-color: var(--color-bg-light); 
+            color: var(--color-text-dark); 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            padding-bottom: 90px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-grow: 1;
+            padding-bottom: 20px;
+        }
+
+        /* ======================================= */
+        /* 2. HEADER HALAMAN & TABS */
+        /* ======================================= */
+        .page-header {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 15px 0;
+        }
+        .page-header a {
+            color: var(--color-text-dark);
+            font-size: 20px;
+            text-decoration: none;
+            justify-self: start;
+        }
+        .page-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            grid-column: 2 / 3;
+            color: var(--color-text-dark);
+        }
+
+        /* Styling Tabs */
+        .tabs-nav-container {
+            margin: 0 -20px;
+            padding: 0 20px;
+            border-bottom: 1px solid var(--color-border-light);
+            background-color: var(--color-bg-light);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .tabs-nav {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px 10px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: var(--color-text-gray);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .tab-button.active {
+            color: var(--color-accent-main);
+            border-bottom: 3px solid var(--color-accent-main);
+        }
+
+        /* ======================================= */
+        /* 3. KONTEN PRODUK (GAYA DASHBOARD) */
+        /* ======================================= */
+        .tab-content {
+            padding-top: 20px;
+            min-height: 400px;
+        }
+        
+        .product-list {
+            display: none; 
+            flex-direction: column;
+            gap: 20px;
+        }
+        .product-list.active {
+            display: flex;
+        }
+
+        /* Styling Kartu Produk */
+        .product-card {
+            background-color: var(--color-card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--color-border-light);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .product-header {
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            margin-bottom: 15px; 
+            border-bottom: 1px solid var(--color-border-light); 
+            padding-bottom: 15px; 
+        }
+        .product-header .icon { 
+            font-size: 24px; 
+            color: var(--color-accent-main); 
+        }
+        .product-header h4 { 
+            font-size: 18px; 
+            font-weight: 700; 
+            color: var(--color-text-dark); 
+        }
+        
+        .product-details { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-bottom: 15px; 
+        }
+        .detail-item p { 
+            color: var(--color-text-gray); 
+            margin-bottom: 4px; 
+            font-size: 13px;
+        }
+        .detail-item strong { 
+            display: block; 
+            font-size: 16px; 
+            font-weight: 700; 
+            color: var(--color-text-dark); 
+        }
+        
+        .earning-row { 
+            border-top: 1px dashed var(--color-border-light); 
+            padding-top: 15px; 
+            margin-bottom: 15px; 
+        }
+        .earning-item { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 15px; 
+            margin-bottom: 8px; 
+        }
+        .earning-item .label { 
+            color: var(--color-text-gray); 
+        }
+        .earning-item .value { 
+            font-weight: 600; 
+            color: var(--color-accent-main); 
+        }
+        
+        /* Penanda Waktu Profit Masuk - Untuk Live Clock */
+        .earning-item .value.profit-time-label {
+             color: var(--color-accent-secondary); 
+             font-weight: 700;
+             text-align: right;
+             font-size: 14px; 
+        }
+        
+        .action-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-top: 1px solid var(--color-border-light); 
+            padding-top: 15px; 
+        }
+        .action-row .limit { 
+            font-size: 14px; 
+            color: var(--color-text-gray); 
+        }
+        .action-row .limit strong { 
+            font-size: 16px; 
+            color: var(--color-accent-main); 
+            font-weight: 700; 
+        }
+        
+        /* TOMBOL LIHAT DETAIL */
+        .btn-view-detail {
+            background-color: var(--color-accent-main); 
+            color: white; 
+            padding: 10px 18px; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 15px; 
+            font-weight: 700; 
+            text-decoration: none; 
+            transition: background-color 0.2s; 
+            cursor: pointer; 
+            display: inline-block;
+        }
+        .btn-view-detail:hover { 
+            background-color: #008891; 
+        }
+        
+        /* ======================================= */
+        /* 4. MODAL/OVERLAY DETAIL PRODUK */
+        /* ======================================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none; 
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: var(--color-bg-light);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInScale 0.3s ease-out;
+        }
+        
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--color-bg-light);
+            border-bottom: 1px solid #eee;
+        }
+        .modal-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .modal-close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--color-text-dark);
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto; 
+            flex-grow: 1;
+        }
+        
+        .modal-summary {
+            background-color: var(--color-card-bg);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .modal-summary h1 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--color-accent-main);
+        }
+        
+        .modal-summary .product-id-text {
+            font-size: 12px;
+            color: var(--color-text-gray);
+        }
+
+        .detail-list-modal .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+        .detail-list-modal .detail-item:last-child {
+            border-bottom: none;
+        }
+        .detail-list-modal .detail-value {
+            /* Perubahan di sini: Jadikan semua nilai tebal secara default */
+            font-weight: 700; 
+            color: var(--color-text-dark);
+            text-align: right;
+            max-width: 60%;
+        }
+        /* Tambahan styling untuk nilai waktu profit yang berjalan (berwarna hijau) */
+        .detail-list-modal .detail-value.profit-time-label-modal {
+            color: var(--color-accent-secondary);
+            font-weight: 700;
+            font-size: 14px; 
+        }
+        .detail-list-modal .detail-label {
+            color: var(--color-text-gray);
+        }
+
+        /* ======================================= */
+        /* 5. EMPTY STATE & NAVBAR BAWAH */
+        /* ======================================= */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+            padding: 40px;
+            margin-top: 50px;
+        }
+        .empty-state i {
+            font-size: 80px;
+            color: var(--color-accent-main); 
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+        .empty-state h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-text-dark);
+            margin-bottom: 10px;
+        }
+        .empty-state p {
+            font-size: 14px;
+            color: var(--color-text-gray);
+            margin-bottom: 30px;
+        }
+        .btn-buy-product {
+            width: 100%;
+            max-width: 250px;
+            padding: 15px;
+            background-color: var(--color-accent-main); 
+            color: var(--color-bg-light); 
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 163, 176, 0.4);
+        }
+        .btn-buy-product:hover { background-color: #008891; }
+
+        .navbar { 
+            position: fixed; 
+            bottom: 20px; 
+            left: 50%; 
+            transform: translateX(-50%) translateY(100px); 
+            width: calc(100% - 40px); 
+            max-width: 430px; 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            background-color: rgba(0,0,0,0); 
+            border: 1px solid var(--color-border-light); 
+            backdrop-filter: blur(5px); 
+            height: 70px; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+            padding: 5px 0; 
+            transition: none; 
+            opacity: 0; 
+        }
+        @keyframes slideInUp { 
+            0% { opacity: 0; transform: translateX(-50%) translateY(100px); } 
+            100% { opacity: 1; transform: translateX(-50%) translateY(0); } 
+        }
+        .navbar.animate-in { 
+            animation: slideInUp 0.5s ease-out forwards; 
+        }
+        .nav-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            text-decoration: none; 
+            color: var(--color-text-gray); 
+            font-size: 11px; 
+            font-weight: 500; 
+            padding: 8px 0; 
+            flex-grow: 1; 
+            position: relative; 
+            transition: color 0.3s ease; 
+        }
+        .nav-item i { 
+            font-size: 22px; 
+            margin-bottom: 2px; 
+            transition: transform 0.3s ease, color 0.3s ease; 
+        }
+        .nav-item.active { 
+            color: var(--color-accent-main); 
+        }
+        .nav-item.active i { 
+            transform: translateY(-5px); 
+            color: var(--color-accent-main); 
+        }
+        .nav-item.active::after { 
+            content: ''; 
+            position: absolute; 
+            bottom: 0; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 30px; 
+            height: 3px; 
+            background-color: var(--color-accent-main); 
+            border-radius: 2px; 
+            transition: width 0.3s ease; 
+        }
+        /* Loading Overlay tetap sama */
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); display: flex;
+            justify-content: center; align-items: center; z-index: 2000; 
+            opacity: 1; transition: opacity 0.5s ease-out, visibility 0.5s; visibility: visible;
+        }
+        .loading-overlay.hidden { opacity: 0; visibility: hidden; }
+        .spinner {
+            display: flex; flex-direction: column; align-items: center; gap: 10px; 
+            padding: 20px; background-color: var(--color-bg-light); border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .spinner i {
+            font-size: 40px; color: var(--color-accent-main); 
+            animation: spin 1.2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner">
+            <i class="fas fa-sync-alt"></i>
+            <span class="loading-text">Memuat...</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        
+        <div class="page-header">
+            <a href="dashboard.html" aria-label="Kembali"><i class="fas fa-arrow-left"></i></a>
+            <h2>Produk Saya</h2>
+            <div class="right-placeholder"></div>
+        </div>
+        
+        <div class="tabs-nav-container">
+            <div class="tabs-nav" id="product-tabs-nav">
+                <button class="tab-button active" data-tab="active">Produk Aktif</button>
+                <button class="tab-button" data-tab="finished">Produk Selesai</button>
+            </div>
+        </div>
+        
+        <div class="tab-content">
+
+            <div class="product-list active" data-content="active" id="active-product-list">
+                <div class="empty-state" id="active-empty-state">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h3>Belum Ada Produk Berjalan</h3>
+                    <p>Anda belum memiliki produk investasi atau layanan yang aktif saat ini. Mulailah perjalanan Anda!</p>
+                    
+                    <button class="btn-buy-product" onclick="window.location.href='dashboard.html'">
+                        Beli Produk Sekarang
+                    </button>
+                </div>
+            </div>
+
+            <div class="product-list" data-content="finished">
+                 <div class="empty-state">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Riwayat Kosong</h3>
+                    <p>Tidak ada produk investasi atau layanan yang telah selesai. Mulailah investasi pertama Anda!</p>
+                    
+                    <button class="btn-buy-product" onclick="window.location.href='dashboard.html'">
+                        Beli Produk Sekarang
+                    </button>
+                </div>
+            </div>
+
+        </div> </div> <div class="navbar" id="main-navbar">
+        <a href="dashboard.html" class="nav-item" data-nav-target="dashboard">
+            <i class="fas fa-home"></i>
+            Dashboard
+        </a>
+        <a href="myproduk.html" class="nav-item active" data-nav-target="my-product">
+            <i class="fas fa-box-open"></i>
+            My Produk
+        </a>
+        <a href="team.html" class="nav-item" data-nav-target="my-team">
+            <i class="fas fa-users"></i>
+            My Team
+        </a>
+        <a href="profil.html" class="nav-item" data-nav-target="profile">
+            <i class="fas fa-user-circle"></i>
+            Profil
+        </a>
+    </div>
+    
+    <div class="modal-overlay" id="productDetailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Detail Produk</h3>
+                <button class="modal-close-btn" onclick="closeProductDetailModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="modal-summary" id="modalProductSummary">
+                    </div>
+
+                <div class="detail-list-modal" id="modalProductDetailList">
+                    </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // =======================================
+        // 1. DATA SIMULASI PRODUK AKTIF
+        // =======================================
+        const currentProducts = [
+            {
+                id: 'PROD-001A',
+                name: 'Stable A',
+                icon: 'fas fa-box-open',
+                investmentAmount: 100000,
+                estimatedDaily: 20000,
+                totalProfit: 660000,
+                durationDays: 33,
+                bonus: 10000,
+                purchaseDate: '19 Nov 2025',
+                // Jam profit (format 24 jam)
+                profitHour: 8, 
+                profitMinute: 0,
+                status: 'Aktif',
+                description: 'Investasi stabil jangka pendek 33 hari dengan profit harian.', // Tetap ada di data, hanya tidak ditampilkan
+            },
+            {
+                id: 'PROD-002B',
+                name: 'Welfare C',
+                icon: 'fas fa-gift',
+                investmentAmount: 800000,
+                estimatedDaily: 350000,
+                totalProfit: 3850000,
+                durationDays: 11,
+                bonus: 0,
+                purchaseDate: '15 Nov 2025',
+                // Jam profit (format 24 jam)
+                profitHour: 10,
+                profitMinute: 30,
+                status: 'Aktif',
+                description: 'Produk Welfare (Kesejahteraan) dengan siklus pendek 11 hari dan tingkat keuntungan tinggi.',
+            },
+            {
+                id: 'PROD-003C',
+                name: 'Stable D',
+                icon: 'fas fa-box-open',
+                investmentAmount: 400000,
+                estimatedDaily: 84000,
+                totalProfit: 2772000,
+                durationDays: 33,
+                bonus: 40000,
+                purchaseDate: '10 Okt 2025',
+                // Jam profit (format 24 jam)
+                profitHour: 15,
+                profitMinute: 0,
+                status: 'Aktif',
+                description: 'Stable investment yang menawarkan bonus pendaftaran.',
+            }
+        ];
+
+        // =======================================
+        // 2. FUNGSI UTILITY & FORMATTING
+        // =======================================
+        function formatRupiah(number) {
+            // Jika input berupa string dan tidak dapat diubah ke angka, kembalikan string aslinya
+            if (isNaN(number)) return number; 
+
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(number);
+        }
+
+        function formatNumber(num) {
+            return num < 10 ? '0' + num : num;
+        }
+
+        // =======================================
+        // 3. FUNGSI LIVE CLOCK WAKTU PROFIT MASUK
+        // =======================================
+        let profitInterval;
+
+        function updateProfitTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            const day = now.getDate();
+            // Menargetkan elemen di kartu produk dan modal
+            const elements = document.querySelectorAll('.profit-time-label, .profit-time-label-modal'); 
+
+            elements.forEach(el => {
+                // Gunakan data-product-id untuk mencari data produk
+                const productId = el.getAttribute('data-product-id');
+                const product = currentProducts.find(p => p.id === productId);
+
+                if (!product) return;
+                
+                // Ambil jam profit dari data produk
+                const profitHour = product.profitHour;
+                const profitMinute = product.profitMinute;
+
+                // Set waktu target untuk hari ini
+                let targetTime = new Date(year, month, day, profitHour, profitMinute, 0);
+
+                // Jika waktu target hari ini sudah lewat, atur waktu target untuk besok
+                if (targetTime < now) {
+                    targetTime.setDate(targetTime.getDate() + 1);
+                }
+
+                const timeDifference = targetTime - now;
+
+                if (timeDifference < 0) {
+                    el.textContent = "Profit Sedang Diproses";
+                } else {
+                    const totalSeconds = Math.floor(timeDifference / 1000);
+                    const hours = Math.floor(totalSeconds / 3600);
+                    const minutes = Math.floor((totalSeconds % 3600) / 60);
+                    const seconds = totalSeconds % 60;
+
+                    // Hilangkan WIB
+                    el.textContent = `${formatNumber(hours)}:${formatNumber(minutes)}:${formatNumber(seconds)}`; 
+                }
+            });
+        }
+        
+        // =======================================
+        // 4. FUNGSI MODAL DETAIL PRODUK
+        // =======================================
+        const productDetailModal = document.getElementById('productDetailModal');
+        const modalProductSummary = document.getElementById('modalProductSummary');
+        const modalProductDetailList = document.getElementById('modalProductDetailList');
+
+        function closeProductDetailModal() {
+            productDetailModal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function openProductDetailModal(product) {
+            // 1. Render Summary (Header Modal)
+            modalProductSummary.innerHTML = `
+                <h1>${product.name}</h1>
+                <span class="product-id-text">ID: ${product.id}</span>
+            `;
+
+            // 2. Render Detail List
+            modalProductDetailList.innerHTML = ''; 
+            
+            // Data detail produk yang akan ditampilkan
+            const details = [
+                { label: 'Status Produk', value: product.status, isLiveTime: false },
+                { label: 'Jumlah Investasi', value: formatRupiah(product.investmentAmount), isLiveTime: false },
+                { label: 'Penghasilan Harian', value: formatRupiah(product.estimatedDaily), isLiveTime: false },
+                { label: 'Total Estimasi Profit', value: formatRupiah(product.totalProfit), isLiveTime: false },
+                { label: 'Siklus/Durasi', value: product.durationDays + ' Hari', isLiveTime: false }, // Permintaan '33 Hari' tebal
+                { label: 'Bonus Diterima', value: formatRupiah(product.bonus), isLiveTime: false },
+                { label: 'Tanggal Pembelian', value: product.purchaseDate, isLiveTime: false }, // Permintaan 'Date' tebal
+                { label: 'Waktu Profit Masuk', value: 'Loading...', isLiveTime: true }, // Permintaan waktu berjalan
+            ];
+            
+            details.forEach(detail => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('detail-item');
+                
+                let valueContent;
+                let valueClass = 'detail-value'; // Semua detail value sekarang tebal dari CSS
+
+                if (detail.isLiveTime) {
+                    // Jika ini adalah Waktu Profit Masuk, tambahkan kelas dan ID produk untuk live update
+                    valueClass += ' profit-time-label-modal'; 
+                    valueContent = `<span class="${valueClass}" data-product-id="${product.id}">Loading...</span>`;
+                } else {
+                    // Untuk semua data lainnya
+                    valueContent = `<span class="${valueClass}">${detail.value}</span>`;
+                }
+
+                itemDiv.innerHTML = `
+                    <span class="detail-label">${detail.label}</span>
+                    ${valueContent}
+                `;
+                modalProductDetailList.appendChild(itemDiv);
+            });
+            
+            // Panggil updateProfitTime agar Live Clock di modal langsung berjalan
+            updateProfitTime();
+
+            // 3. Tampilkan Modal
+            productDetailModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        // Tutup modal jika user klik di luar area konten modal
+        productDetailModal.addEventListener('click', (e) => {
+            if (e.target === productDetailModal) {
+                closeProductDetailModal();
+            }
+        });
+
+
+        // =======================================
+        // 5. FUNGSI RENDERING LIST (GAYA DASHBOARD)
+        // =======================================
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            card.classList.add('product-card');
+
+            // Konten kartu menggunakan struktur Dashboard
+            card.innerHTML = `
+                <div class="product-header"> 
+                    <i class="${product.icon} icon"></i> 
+                    <h4>${product.name}</h4> 
+                </div>
+                
+                <div class="product-details"> 
+                    <div class="detail-item">
+                        <p>Jumlah Investasi</p>
+                        <strong>${formatRupiah(product.investmentAmount)}</strong>
+                    </div> 
+                    <div class="detail-item">
+                        <p>Siklus Tersisa</p>
+                        <strong>${product.durationDays} Hari</strong>
+                    </div> 
+                </div>
+                
+                <div class="earning-row"> 
+                    <div class="earning-item">
+                        <span class="label">Penghasilan Harian</span>
+                        <span class="value">${formatRupiah(product.estimatedDaily)}</span>
+                    </div> 
+                    <div class="earning-item">
+                        <span class="label">Total Estimasi Profit</span>
+                        <span class="value">${formatRupiah(product.totalProfit)}</span>
+                    </div> 
+                    <div class="earning-item">
+                        <span class="label">Profit Masuk Dalam</span>
+                        <span class="value profit-time-label" data-product-id="${product.id}">Loading...</span>
+                    </div> 
+                </div>
+                
+                <div class="action-row"> 
+                    <div class="limit">
+                        Dibeli pada <strong>${product.purchaseDate}</strong>
+                    </div> 
+                    <button class="btn-view-detail" 
+                        onclick="openProductDetailModal(currentProducts.find(p => p.id === '${product.id}'))">
+                        Lihat Detail
+                    </button> 
+                </div>
+            `;
+            return card;
+        }
+
+        function renderProductList(products, targetElementId, emptyStateId) {
+            const targetElement = document.getElementById(targetElementId);
+            const emptyState = document.getElementById(emptyStateId);
+            
+            targetElement.innerHTML = ''; 
+
+            if (products.length === 0) {
+                targetElement.appendChild(emptyState);
+                emptyState.style.display = 'flex'; 
+            } else {
+                products.forEach(product => {
+                    targetElement.appendChild(createProductCard(product));
+                });
+                if (emptyState) emptyState.style.display = 'none'; 
+                
+                // Mulai interval update waktu setelah produk dirender
+                if (profitInterval) clearInterval(profitInterval); // Hapus interval lama
+                profitInterval = setInterval(updateProfitTime, 1000); // Mulai interval baru
+            }
+        }
+
+
+        // =======================================
+        // 6. FUNGSI UTAMA & EVENT LISTENER
+        // =======================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const mainNavbar = document.getElementById('main-navbar');
+            const tabsNav = document.getElementById('product-tabs-nav');
+            const tabButtons = tabsNav.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.product-list');
+
+            // --- FUNGSI TABS ---
+            function switchTab(targetTab) {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                const activeBtn = document.querySelector(`.tab-button[data-tab="${targetTab}"]`);
+                if (activeBtn) activeBtn.classList.add('active');
+
+                const activeContent = document.querySelector(`.product-list[data-content="${targetTab}"]`);
+                if (activeContent) activeContent.classList.add('active');
+                
+                if (targetTab === 'active') {
+                    renderProductList(currentProducts, 'active-product-list', 'active-empty-state');
+                } else {
+                     if (profitInterval) clearInterval(profitInterval); // Hentikan clock jika pindah tab
+                }
+            }
+            
+            tabsNav.addEventListener('click', function(e) {
+                const targetButton = e.target.closest('.tab-button');
+                if (targetButton) {
+                    const targetTab = targetButton.getAttribute('data-tab');
+                    switchTab(targetTab);
+                }
+            });
+
+            // --- LOGIKA ANIMASI & LOADING ---
+            setTimeout(() => {
+                if (loadingOverlay) loadingOverlay.classList.add('hidden');
+            }, 500);
+
+            if (mainNavbar) mainNavbar.classList.add('animate-in');
+            
+            // --- LOGIKA NAVBAR AKTIF ---
+            const navItems = document.querySelectorAll('.nav-item');
+            const currentPage = 'myproduk.html'; 
+
+            navItems.forEach(i => i.classList.remove('active'));
+
+            const activeNav = document.querySelector('.nav-item[href="' + currentPage + '"]');
+            if (activeNav) {
+                activeNav.classList.add('active');
+            } else {
+                const fallbackNav = document.querySelector('.nav-item[data-nav-target="my-product"]');
+                if (fallbackNav) fallbackNav.classList.add('active');
+            }
+            
+            // Inisialisasi: Tampilkan tab 'active' saat pertama dimuat
+            switchTab('active');
+            
+        });
+    </script>
+</body>
+</html>

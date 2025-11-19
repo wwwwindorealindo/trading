@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformasi Kekayaan (Tema Terang)</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================= */
+        /* 1. KEYFRAMES (Definisi Animasi) */
+        /* ======================================= */
+        @keyframes entranceFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ======================================= */
+        /* 2. VARIABEL & RESET DASAR (TEMA PUTIH-TEAL) */
+        /* ======================================= */
+        :root {
+            /* TEMA BARU: Putih - Teal */
+            --color-bg-light: #ffffff;      /* Background utama */
+            --color-card-bg: #ebecf0;       /* Background card/button terang */
+            --color-text-dark: #2d3748;     /* Teks utama gelap */
+            --color-text-gray: #718096;     /* Teks sekunder */
+            --color-accent-main: #00A3B0;   /* TEAL */
+            --color-accent-secondary: #38A169; /* HIJAU */
+            
+            --telegram-color: #0088CC;
+            --link-color: var(--color-accent-secondary); 
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.15s ease-out;
+        }
+
+        body {
+            /* Perubahan Tema */
+            background-color: var(--color-bg-light); 
+            color: var(--color-text-dark); 
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            text-align: left;
+        }
+
+        /* ======================================= */
+        /* 3. ANIMASI SAAT DIMUAT (Entrance Fade-In) */
+        /* ======================================= */
+
+        .animated {
+            opacity: 0;
+            animation: entranceFadeIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .text-section h1 { animation-delay: 0s; }
+        .text-section .subtitle { animation-delay: 0.1s; }
+        .text-section .description { animation-delay: 0.2s; }
+        .action-section .registration { animation-delay: 0.4s; }
+
+
+        /* --- Gaya Teks Utama --- */
+        
+        h1 {
+            font-family: 'Poppins', serif;
+            font-size: 25px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 10px;
+            /* Perubahan Warna Teks */
+            color: var(--color-accent-main); 
+        }
+
+        .subtitle {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            /* Perubahan Warna Teks */
+            color: var(--color-text-dark); 
+        }
+
+        .description {
+            font-size: 14px;
+            font-weight: 400;
+            /* Perubahan Warna Teks */
+            color: var(--color-text-gray); 
+        }
+
+        /* --- Gaya Tombol/Aksi --- */
+
+        .action-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .button-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none;
+            /* Perubahan: Background terang, Teks gelap */
+            background-color: var(--color-card-bg); 
+            color: var(--color-text-dark);
+            padding: 20px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--color-card-bg);
+        }
+
+        .button-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+            /* Perubahan: Border hover menggunakan warna aksen utama */
+            border-color: var(--color-accent-main); 
+        }
+
+        .icon-text {
+            display: flex;
+            align-items: center;
+        }
+
+        .icon-wrapper {
+            width: 38px;
+            height: 38px;
+            margin-right: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+        
+        .icon-wrapper i {
+            color: var(--white);
+            font-size: 22px;
+        }
+
+        .button-link:hover .arrow,
+        .button-link:hover .label {
+            /* Perubahan: Teks hover menggunakan warna aksen utama */
+            color: var(--color-accent-main); 
+        }
+        
+        /* Hanya link pendaftaran yang tersisa */
+        .registration .icon-wrapper {
+            /* Warna latar belakang icon disetel ke HIJAU (secondary accent) */
+            background-color: var(--link-color); 
+        }
+
+        .label {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-text-dark); 
+        }
+
+        .arrow {
+            font-size: 18px;
+            font-weight: 800;
+            /* Warna panah disetel ke Teal */
+            color: var(--color-accent-main); 
+        }
+        
+        /* ======================================= */
+        /* 4. LOADING SCREEN (Gelap Transparan + Teks) */
+        /* ======================================= */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Tetap gelap transparan agar kontras dengan tema terang */
+            background-color: rgba(0, 0, 0, 0.6); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; 
+            opacity: 1;
+            transition: opacity 0.5s ease-out, visibility 0.5s;
+            visibility: visible;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .spinner {
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            gap: 10px; 
+            padding: 20px; 
+            /* Kotak loading putih */
+            background-color: var(--color-bg-light); 
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .spinner i {
+            font-size: 40px;
+            /* Warna ikon loading Teal */
+            color: var(--color-accent-main); 
+            animation: spin 1.2s linear infinite;
+        }
+        
+        .loading-text {
+            font-size: 16px;
+            font-weight: 600;
+            /* Teks loading gelap */
+            color: var(--color-text-dark); 
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner">
+            <i class="fas fa-sync-alt"></i>
+            <span class="loading-text">Memuat...</span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="text-section">
+            <h1 class="animated">
+                Di sini, saya akan membimbing Anda memahami langkah-langkah strategis yang dapat membantu Anda meningkatkan kapasitas finansial dan mencapai level kesejahteraan yang lebih baik
+            </h1>
+            <p class="subtitle animated">
+                Dengan mengelola uang Anda dengan bijak, Anda turut membangun masa depan yang Anda inginkan
+            </p>
+            <p class="description animated">
+                Dari kebiasaan mengelola uang secara cerdas hingga membuat keputusan belanja yang lebih bijak, setiap langkah kecil membawa Anda semakin dekat pada peningkatan tujuan keuangan Anda
+            </p>
+        </div>
+
+        <div class="action-section">
+
+            <a href="register.html" class="button-link registration animated">
+                <div class="icon-text">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <span class="label">Link Pendaftaran</span>
+                </div>
+                <span class="arrow">&rarr;</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+
+            // Sembunyikan Loading Screen setelah jeda singkat (simulasi loading 700ms)
+            setTimeout(() => {
+                loadingOverlay.classList.add('hidden');
+            }, 700); 
+        });
+    </script>
+</body>
+</html>
